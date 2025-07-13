@@ -5,6 +5,32 @@
     font-style: normal;
   }
 
+.cuerpo {
+    width: 100dvw;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+        // width: 8px;
+        display: none;
+    }
+
+    // &::-webkit-scrollbar-track {
+    //     background: #2c2c2c;
+    // }
+
+    // &::-webkit-scrollbar-thumb {
+    //     background-color: #888;
+    //     border-radius: 4px;
+    // }
+    
+    // &::-webkit-scrollbar-thumb:hover {
+    //     background: #555;
+    // }
+}
+
 
 .inicio {
     display: flex;
@@ -36,7 +62,7 @@
         position: relative;
         z-index: 2;
         font-family: 'KimeraFont';
-        font-size: 12rem;
+        font-size: 12vw;
         font-weight: normal;
         padding: 0.1em;
         background-image: linear-gradient(to top, white 100%, transparent 0%);
@@ -47,6 +73,7 @@
         background-clip: text;
         -webkit-text-fill-color: rgba(255, 255, 255, 0.39);
         transition: filter 0.8s ease-in-out;
+        will-change: filter;
     }
 
     &[data-state='loading'] h1 {
@@ -60,9 +87,15 @@
 
         h1 {
             background-size: 100% 100%;
-            filter: drop-shadow(10px 5px 8px rgba(0, 0, 0, 0.8));
+            filter: drop-shadow(0.05em 0.025em 0.04em rgba(0, 0, 0, 0.8));
         }
     }
+}
+
+.seccion {
+    height: 100dvh;
+    min-height: 100dvh;
+    display: flex;
 }
 
 
