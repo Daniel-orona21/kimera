@@ -1,0 +1,99 @@
+@font-face {
+    font-family: 'KimeraFont';
+    src: url('../../../assets/fonts/typogama-ahsing.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+
+.inicio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+    min-height: 100dvh;
+    width: 100dvw;
+    background-color: #006241;
+    position: relative;
+    overflow: hidden;
+
+    .bg-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('../../../assets/images/fondo.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0;
+        z-index: 1;
+        pointer-events: none;
+        clip-path: inset(100% 100% 100% 100%);
+    }
+
+    h1 {
+        position: relative;
+        z-index: 2;
+        font-family: 'KimeraFont';
+        font-size: 12rem;
+        font-weight: normal;
+        padding: 0.1em;
+        background-image: linear-gradient(to top, white 100%, transparent 0%);
+        background-size: 100% 0%;
+        background-position: bottom;
+        background-repeat: no-repeat;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: rgba(255, 255, 255, 0.39);
+        transition: filter 0.8s ease-in-out;
+    }
+
+    &[data-state='loading'] h1 {
+        animation: progress-bar 5s linear forwards;
+    }
+
+    &[data-state='loaded'] {
+        .bg-image {
+            opacity: 1;
+        }
+
+        h1 {
+            background-size: 100% 100%;
+            filter: drop-shadow(10px 5px 8px rgba(0, 0, 0, 0.8));
+        }
+    }
+}
+
+
+
+@keyframes progress-bar {
+    0% {
+        background-size: 100% 0%;
+    }
+    30% {
+        background-size: 100% 40%;
+    }
+    60% {
+        background-size: 100% 55%;
+    }
+    80% {
+        background-size: 100% 55%;
+    }
+    100% {
+        background-size: 100% 100%;
+    }
+}
+
+@keyframes square-in-center {
+    from {
+      clip-path: inset(100% 100% 100% 100%);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  
+  [transition-style="in:square:center"] {
+    animation: 2.5s cubic-bezier(.25, 1, .30, 1) square-in-center both;
+  }
