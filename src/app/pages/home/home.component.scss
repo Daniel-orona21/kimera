@@ -5,12 +5,18 @@
     font-style: normal;
   }
 
+
 .cuerpo {
     width: 100dvw;
     height: 100dvh;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    overflow-y: hidden;
+
+    &.scroll {
+        overflow-y: auto;
+    }
 
     &::-webkit-scrollbar {
         // width: 8px;
@@ -42,6 +48,7 @@
     background-color: #006241;
     position: relative;
     overflow: hidden;
+    flex-direction: column;
 
     .bg-image {
         position: absolute;
@@ -74,6 +81,36 @@
         -webkit-text-fill-color: rgba(255, 255, 255, 0.39);
         transition: filter 0.8s ease-in-out;
         will-change: filter;
+    }
+
+    .subtitulo {
+        position: relative;
+        z-index: 2;
+        color: white;
+        font-size: 1.5vw;
+        font-weight: normal;
+        
+        transition: all .5s ease;
+        opacity: 0;
+
+       &.visible {
+        opacity: 1;
+       }
+
+        p {
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-family: "Onest", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 200;
+            font-style: normal;
+            text-shadow:
+  0 0 0.1em white,     // brillo sutil
+  0 0 0.3em black,
+  0 0 0.6em black,
+  0 0 1.2em black;
+        }
+        
     }
 
     &[data-state='loading'] h1 {

@@ -1,10 +1,13 @@
-<div class="cuerpo">
+<div class="cuerpo" #cuerpo>
     <div class="inicio" [attr.data-state]="animationState">
-        <div 
-          class="bg-image" 
+        <div
+          class="bg-image"
           [attr.transition-style]="animationState === 'loaded' ? 'in:square:center' : null">
         </div>
         <h1>KIMERA</h1>
+        <div class="subtitulo">
+            <p>barber and tattoo studio</p>
+        </div>
     </div>
     <div class="seccion">
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda mollitia, quaerat veniam dignissimos dolores eaque minus iure sunt distinctio reiciendis voluptatibus, dicta iusto laudantium quis tempora blanditiis vel quas maxime?</p>
