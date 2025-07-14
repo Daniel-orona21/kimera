@@ -43,24 +43,71 @@ header {
     left: 0;
     width: 100dvw;
     height: auto;
-    padding: 1.5rem 3rem;
+    padding: .5rem;
     z-index: 1000;
     display: flex;
     align-items: center;
     opacity: 0;
-    
-    background-color: rgba(0, 0, 0, 0.3);
+    justify-content: center;
+    flex-direction: column;
+    height: fit-content;
+    background-color: white;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 
     .h1-placeholder {
         font-family: 'KimeraFont';
-        font-size: 2.5rem;
+        font-size: 2.8rem;
         font-weight: normal;
         color: transparent; /* Solo para medir */
         padding: 0.1em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .secciones {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        align-items: center;
+        height: min-content;
+
+        li {
+            height: auto;
+            min-height: initial;
+            list-style: none;
+            padding-bottom: 0.5em;
+            position: relative;
+            
+            a {
+                cursor: pointer;
+                position: relative;
+
+            }
+            &::before {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 4px;
+                border-radius: 4px;
+                background-color: #18272F;
+                bottom: 0;
+                left: 0;
+                transform-origin: right;
+                transform: scaleX(0);
+                transition: transform .2s ease-in-out;
+              }
+              
+              &:hover::before {
+                transform-origin: left;
+                transform: scaleX(1);
+              }
+
+        }
     }
 }
+
 
 
 .inicio {
@@ -113,6 +160,11 @@ header {
             -webkit-text-fill-color: white; /* Color sólido al moverse */
             top: 0; /* Se establecerá dinámicamente */
             left: 0; /* Se establecerá dinámicamente */
+            transition: -webkit-text-fill-color 0.3s ease-in-out, filter 0.3s ease-in-out;
+
+            &.in-header {
+                -webkit-text-fill-color: black;
+            }
         }
     }
 
@@ -144,13 +196,44 @@ header {
             font-weight: 200;
             font-style: normal;
             text-shadow:
-  0 0 0.1em white,     // brillo sutil
-  0 0 0.3em black,
-  0 0 0.6em black,
-  0 0 1.2em black;
+            0 0 0.1em white,     
+            0 0 0.3em black,
+            0 0 0.6em black,
+            0 0 1.2em black;
         }
         
     }
+    
+    .scroll-down-container {
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        bottom: 9em;
+        gap: 1em;
+        align-items: center;
+        color: white;
+        opacity: 0;
+        transition: all 1s ease;
+        
+        .scroll-down {
+            background-color: transparent;
+            width: min-content;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            border: 1px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1em !important;
+        }
+        
+        &.visible {
+            transform: translateY(40px);
+            opacity: .8;
+        }
+    }
+
 
     &[data-state='loading'] h1 {
         animation: progress-bar 5s linear forwards;
@@ -164,14 +247,18 @@ header {
         h1 {
             background-size: 100% 100%;
             filter: drop-shadow(0.05em 0.025em 0.04em rgba(0, 0, 0, 0.8));
+
+            &.in-header {
+                filter: none !important;
+            }
         }
     }
 }
 
 .seccion {
-    height: 100dvh;
-    min-height: 100dvh;
+    padding-top: 6.5rem;
     display: flex;
+    min-height: 500px;
 }
 
 

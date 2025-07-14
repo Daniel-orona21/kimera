@@ -1,6 +1,12 @@
 <div class="cuerpo" #cuerpo>
     <header #header>
         <div class="h1-placeholder" #h1Placeholder>KIMERA</div>
+        <ul class="secciones">
+            <li><a (click)="scrollTo('#barber')">barber</a></li>
+            <li><a (click)="scrollTo('#tattoo')">tattoo</a></li>
+            <li><a (click)="scrollTo('#productos')">productos</a></li>
+            <li><a (click)="scrollTo('#ubicacion')">ubicación</a></li>
+        </ul>
     </header>
     <div class="inicio" #inicio [attr.data-state]="animationState">
         <div
@@ -13,8 +19,23 @@
         <div class="subtitulo" #subtitulo>
             <p>barber and tattoo studio</p>
         </div>
+        <div class="scroll-down-container" #scrollDownContainer>
+            <div class="scroll-down">
+                <span class="material-symbols-outlined">arrow_cool_down</span>
+            </div>
+            <p>Scroll down</p>
+        </div>
     </div>
-    <div class="seccion">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda mollitia, quaerat veniam dignissimos dolores eaque minus iure sunt distinctio reiciendis voluptatibus, dicta iusto laudantium quis tempora blanditiis vel quas maxime?</p>
+    <div id="barber" class="seccion">
+        <app-barber />
+    </div>
+    <div id="tattoo" class="seccion">
+        <app-tattoo />
+    </div>
+    <div id="productos" class="seccion">
+        <app-productos />
+    </div>
+    <div id="ubicacion" class="seccion">
+        <app-ubicacion />
     </div>
 </div>

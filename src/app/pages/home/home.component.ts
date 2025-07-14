@@ -1,16 +1,20 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, Renderer2, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import Lenis from 'lenis';
+import { BarberComponent } from "../barber/barber.component";
+import { TattooComponent } from "../tattoo/tattoo.component";
+import { ProductosComponent } from "../productos/productos.component";
+import { UbicacionComponent } from "../ubicacion/ubicacion.component";
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule],
+  imports: [CommonModule, BarberComponent, TattooComponent, ProductosComponent, UbicacionComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   animationState: 'idle' | 'loading' | 'loaded' = 'idle';
-  playAnimation = true;
+  playAnimation = false;
 
   @HostBinding('class.no-animation')
   get noAnimation(): boolean {
@@ -27,6 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('h1Placeholder') h1Placeholder!: ElementRef<HTMLElement>;
   @ViewChild('h1Wrapper') h1Wrapper!: ElementRef<HTMLElement>;
   @ViewChild('subtitulo') subtitulo!: ElementRef<HTMLElement>;
+  @ViewChild('scrollDownContainer') scrollDownContainer!: ElementRef<HTMLElement>;
 
   private h1InitialRect?: DOMRect;
   private h1TargetRect?: DOMRect;
@@ -76,8 +81,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (!this.playAnimation) {
       this.renderer.addClass(this.subtitulo.nativeElement, 'visible');
+      this.renderer.addClass(this.scrollDownContainer.nativeElement, 'visible');
       
-      // Esperar a que las fuentes estén cargadas para asegurar medidas correctas
       document.fonts.ready.then(() => {
         this.setupScroll();
       });
@@ -86,13 +91,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onAnimationEnd() {
     const subtituloEl = this.subtitulo.nativeElement;
+    const scroll = this.scrollDownContainer.nativeElement;
 
     setTimeout(() => {
       subtituloEl.classList.add('visible');
       setTimeout(() => {
         this.setupScroll();
+        scroll.classList.add('visible')
       }, 500);
     }, 1500);
+  }
+
+  scrollTo(section: string) {
+    this.lenis?.scrollTo(section, {
+      offset: 0,
+      duration: 1.5,
+    });
   }
 
   private setupScroll(): void {
@@ -106,11 +120,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.h1InitialRect = this.h1.nativeElement.getBoundingClientRect();
     this.h1TargetRect = this.h1Placeholder.nativeElement.getBoundingClientRect();
     this.animationEndScroll = this.inicio.nativeElement.offsetHeight / 2;
-
-    // Reservar el espacio del H1 para evitar el "brinco"
     this.renderer.setStyle(this.h1Wrapper.nativeElement, 'height', `${this.h1InitialRect.height}px`);
-
-    // Coloca el H1 en su posición inicial pero como elemento 'fixed'
     this.renderer.addClass(this.h1.nativeElement, 'moving');
     this.renderer.setStyle(this.h1.nativeElement, 'top', `${this.h1InitialRect.top}px`);
     this.renderer.setStyle(this.h1.nativeElement, 'left', `${this.h1InitialRect.left}px`);
@@ -122,28 +132,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const scrollY = e.scroll;
     const progress = Math.min(scrollY / this.animationEndScroll, 1);
 
-    // 1. Animar opacidad del header
     this.renderer.setStyle(this.header.nativeElement, 'opacity', progress);
-
-    // 2. Animar opacidad del subtitulo (fade out)
     this.renderer.setStyle(this.subtitulo.nativeElement, 'opacity', 1 - progress);
+    this.renderer.setStyle(this.scrollDownContainer.nativeElement, 'opacity', 1 - progress);
 
-    // 3. Animar H1
     const targetScale = this.h1TargetRect.width / this.h1InitialRect.width;
-
-    // Coordenadas del centro del H1 inicial
     const initialCenterX = this.h1InitialRect.left + this.h1InitialRect.width / 2;
     const initialCenterY = this.h1InitialRect.top + this.h1InitialRect.height / 2;
-
-    // Coordenadas del centro del H1 final (placeholder)
     const targetCenterX = this.h1TargetRect.left + this.h1TargetRect.width / 2;
     const targetCenterY = this.h1TargetRect.top + this.h1TargetRect.height / 2;
-
-    // Delta de movimiento para el centro
     const deltaX = targetCenterX - initialCenterX;
     const deltaY = targetCenterY - initialCenterY;
-    
-    // Interpolar translateX, translateY y scale
     const translateX = deltaX * progress;
     const translateY = deltaY * progress;
     const scale = 1 - (1 - targetScale) * progress;
@@ -151,5 +150,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const transformValue = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
     this.renderer.setStyle(this.h1.nativeElement, 'transform', transformValue);
     this.renderer.setStyle(this.h1.nativeElement, 'transform-origin', 'center center');
+
+    if (progress === 1) {
+      this.renderer.addClass(this.h1.nativeElement, 'in-header');
+    } else {
+      this.renderer.removeClass(this.h1.nativeElement, 'in-header');
+    }
   }
+
 }
