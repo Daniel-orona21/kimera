@@ -37,6 +37,31 @@
     // }
 }
 
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100dvw;
+    height: auto;
+    padding: 1.5rem 3rem;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    
+    background-color: rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+
+    .h1-placeholder {
+        font-family: 'KimeraFont';
+        font-size: 2.5rem;
+        font-weight: normal;
+        color: transparent; /* Solo para medir */
+        padding: 0.1em;
+    }
+}
+
 
 .inicio {
     display: flex;
@@ -80,7 +105,21 @@
         background-clip: text;
         -webkit-text-fill-color: rgba(255, 255, 255, 0.39);
         transition: filter 0.8s ease-in-out;
-        will-change: filter;
+        will-change: filter, transform; /* Añadimos transform a will-change */
+
+        &.moving {
+            position: fixed;
+            z-index: 1001; /* Por encima del header */
+            -webkit-text-fill-color: white; /* Color sólido al moverse */
+            top: 0; /* Se establecerá dinámicamente */
+            left: 0; /* Se establecerá dinámicamente */
+        }
+    }
+
+    .h1-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .subtitulo {

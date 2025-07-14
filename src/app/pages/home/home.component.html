@@ -1,11 +1,16 @@
 <div class="cuerpo" #cuerpo>
-    <div class="inicio" [attr.data-state]="animationState">
+    <header #header>
+        <div class="h1-placeholder" #h1Placeholder>KIMERA</div>
+    </header>
+    <div class="inicio" #inicio [attr.data-state]="animationState">
         <div
           class="bg-image"
           [attr.transition-style]="animationState === 'loaded' ? 'in:square:center' : null">
         </div>
-        <h1>KIMERA</h1>
-        <div class="subtitulo">
+        <div class="h1-wrapper" #h1Wrapper>
+          <h1 #h1>KIMERA</h1>
+        </div>
+        <div class="subtitulo" #subtitulo>
             <p>barber and tattoo studio</p>
         </div>
     </div>
