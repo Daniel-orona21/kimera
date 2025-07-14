@@ -1,7 +1,7 @@
 <div class="cuerpo" #cuerpo>
     <header #header>
         <div class="h1-placeholder" #h1Placeholder>KIMERA</div>
-        <ul class="secciones">
+        <ul>
             <li><a (click)="scrollTo('#barber')">barber</a></li>
             <li><a (click)="scrollTo('#tattoo')">tattoo</a></li>
             <li><a (click)="scrollTo('#productos')">productos</a></li>
@@ -26,16 +26,18 @@
             <p>Scroll down</p>
         </div>
     </div>
-    <div id="barber" class="seccion">
-        <app-barber />
-    </div>
-    <div id="tattoo" class="seccion">
-        <app-tattoo />
-    </div>
-    <div id="productos" class="seccion">
-        <app-productos />
-    </div>
-    <div id="ubicacion" class="seccion">
-        <app-ubicacion />
+    <div class="secciones">
+        <div id="barber" class="seccion">
+            <app-barber />
+        </div>
+        <div id="tattoo" class="seccion">
+            <app-tattoo />
+        </div>
+        <div id="productos" class="seccion">
+            <app-productos />
+        </div>
+        <div id="ubicacion" class="seccion">
+            <app-ubicacion />
+        </div>
     </div>
 </div>

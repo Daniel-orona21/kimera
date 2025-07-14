@@ -66,7 +66,7 @@ header {
         justify-content: center;
     }
 
-    .secciones {
+    ul {
         display: flex;
         width: 100%;
         justify-content: space-around;
@@ -255,10 +255,18 @@ header {
     }
 }
 
-.seccion {
-    padding-top: 6.5rem;
+.secciones {
     display: flex;
-    min-height: 500px;
+    flex-direction: column;
+    position: relative;
+
+    .seccion {
+        position: relative;
+        padding-top: 6.5rem;
+        display: flex;
+        display: flex;
+        background-color: white;
+    }
 }
 
 
