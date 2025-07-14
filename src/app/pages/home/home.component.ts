@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, Renderer2, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import Lenis from 'lenis';
 
@@ -11,6 +11,12 @@ import Lenis from 'lenis';
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   animationState: 'idle' | 'loading' | 'loaded' = 'idle';
   playAnimation = true;
+
+  @HostBinding('class.no-animation')
+  get noAnimation(): boolean {
+    return !this.playAnimation;
+  }
+
   private lenis: Lenis | null = null;
   private rafHandle: number | null = null;
 
@@ -43,7 +49,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, 0);
     } else {
       this.animationState = 'loaded';
-      this.onAnimationEnd();
     }
   }
 
@@ -61,15 +66,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.lenis = new Lenis({
       wrapper: this.cuerpo.nativeElement,
     });
-
     this.lenis.stop();
 
     const raf = (time: number) => {
       this.lenis?.raf(time);
       this.rafHandle = requestAnimationFrame(raf);
     };
-
     this.rafHandle = requestAnimationFrame(raf);
+
+    if (!this.playAnimation) {
+      this.renderer.addClass(this.subtitulo.nativeElement, 'visible');
+      
+      // Esperar a que las fuentes estén cargadas para asegurar medidas correctas
+      document.fonts.ready.then(() => {
+        this.setupScroll();
+      });
+    }
   }
 
   onAnimationEnd() {
@@ -78,14 +90,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     setTimeout(() => {
       subtituloEl.classList.add('visible');
       setTimeout(() => {
-        this.cuerpo.nativeElement.classList.add('scroll');
-        this.lenis?.start();
-        
-        this.prepareScrollAnimation();
-        this.lenis?.on('scroll', this.onScroll);
-
+        this.setupScroll();
       }, 500);
     }, 1500);
+  }
+
+  private setupScroll(): void {
+    this.renderer.addClass(this.cuerpo.nativeElement, 'scroll');
+    this.lenis?.start();
+    this.prepareScrollAnimation();
+    this.lenis?.on('scroll', this.onScroll);
   }
 
   private prepareScrollAnimation(): void {
