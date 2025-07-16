@@ -5,10 +5,11 @@ import { BarberComponent } from "../barber/barber.component";
 import { TattooComponent } from "../tattoo/tattoo.component";
 import { ProductosComponent } from "../productos/productos.component";
 import { UbicacionComponent } from "../ubicacion/ubicacion.component";
+import { ImagesComponent } from "../images/images.component";
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, BarberComponent, TattooComponent, ProductosComponent, UbicacionComponent],
+  imports: [CommonModule, BarberComponent, TattooComponent, ProductosComponent, UbicacionComponent, ImagesComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

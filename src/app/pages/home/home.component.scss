@@ -261,8 +261,9 @@ header {
     position: relative;
 
     .seccion {
+        min-height: 100dvh;
         position: relative;
-        padding-top: 6.5rem;
+        // padding-top: 6.5rem;
         display: flex;
         display: flex;
         background-color: white;
