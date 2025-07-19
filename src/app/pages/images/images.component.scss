@@ -17,6 +17,33 @@
     width: 100%;
     z-index: 2;
     pointer-events: none; /* Allow scroll/clicks to pass through */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hello__div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.hello__svg {
+    fill: none;
+    stroke: #fff;
+    stroke-linecap: round;
+    stroke-miterlimit: 10;
+    stroke-width: 48px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .text {
