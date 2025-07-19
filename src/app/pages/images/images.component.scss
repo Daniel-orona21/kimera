@@ -32,43 +32,16 @@
     max-width: 600px;
 }
 
-.hello__svg {
-    fill: none;
-    stroke: #fff;
-    stroke-linecap: round;
-    stroke-miterlimit: 10;
-    stroke-width: 48px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+.hello__div p {
     font-family: termina, sans-serif;
     font-weight: 900;
     font-style: normal;
     font-size: 8vw;
     text-align: center;
-    width: 100%;
-    transform: translate(-50%, -50%);
     color: white;
+    margin: 0;
     -webkit-text-stroke-width: 1.5px;
     -webkit-text-stroke-color: white;
-}
-
-.outline-text {
-    color: transparent;
-}
-
-.filter-text {
-    mix-blend-mode: screen;
-    color: #804691;
 }
 
 .images {

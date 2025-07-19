@@ -14,7 +14,6 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
   private lastTime = 0;
   private animationFrame: number | null = null;
   private skewSetter: any = null;
-  private animationStarted = false;
   private currentScroller: HTMLElement | Window = window;
 
   constructor(private el: ElementRef) {}
@@ -24,8 +23,6 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
       const componentElement = this.el.nativeElement;
       const imagesContainer = componentElement.querySelector('.images-container');
       this.images = gsap.utils.toArray<HTMLElement>(componentElement.querySelectorAll('.images img'));
-
-      // Use window as scroller if none provided
       if (this.scroller) {
         this.currentScroller = this.scroller;
       }
@@ -34,18 +31,11 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
         console.warn('Images component: Required elements not found');
         return;
       }
-
-      // Create skew setter for smooth animations
       this.skewSetter = gsap.quickTo(this.images, "skewY", { duration: 0.1 });
       this.lastTime = performance.now();
-
-      // Listen to scroll events
       this.currentScroller.addEventListener('scroll', this.handleScroll.bind(this), { passive: true });
-      
-      // Initial check for visibility
+    
       this.checkVisibility();
-
-      // Also check visibility after a short delay to ensure it works
       setTimeout(() => {
         this.checkVisibility();
       }, 100);
@@ -101,76 +91,12 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
     // Check if the images section is in view
     const isVisible = containerRect.top < viewportHeight && containerRect.bottom > 0;
     
-    console.log('Visibility check:', {
-      containerTop: containerRect.top,
-      containerBottom: containerRect.bottom,
-      viewportHeight,
-      isVisible,
-      isInView: this.isInView,
-      animationStarted: this.animationStarted
-    });
-    
     if (isVisible && !this.isInView) {
-      console.log('Component entered view - starting animations');
       this.isInView = true;
       this.startSkewEffect();
-      this.startSvgAnimation();
     } else if (!isVisible && this.isInView) {
-      console.log('Component left view');
       this.isInView = false;
       this.stopSkewEffect();
-      // Reset animation state so it can restart when re-entering
-      this.animationStarted = false;
-    }
-  }
-
-  private startSvgAnimation() {
-    console.log('Starting SVG animation');
-    const helloDiv = this.el.nativeElement.querySelector('.hello__div');
-    console.log('Hello div found:', !!helloDiv);
-    
-    if (helloDiv) {
-      const svg = helloDiv.querySelector('.hello__svg');
-      console.log('SVG element found:', !!svg);
-      
-      if (svg) {
-        console.log('SVG properties before animation:', {
-          strokeDasharray: svg.style.strokeDasharray,
-          strokeDashoffset: svg.style.strokeDashoffset,
-          stroke: svg.style.stroke,
-          strokeWidth: svg.style.strokeWidth
-        });
-        
-        // Kill any existing animation
-        gsap.killTweensOf(svg);
-        
-        // Use GSAP to animate the SVG stroke
-        gsap.set(svg, {
-          strokeDasharray: 5800,
-          strokeDashoffset: 5800
-        });
-        
-        console.log('SVG properties after GSAP set:', {
-          strokeDasharray: svg.style.strokeDasharray,
-          strokeDashoffset: svg.style.strokeDashoffset
-        });
-        
-        gsap.to(svg, {
-          strokeDashoffset: 0,
-          duration: 3,
-          ease: "none",
-          delay: .5, // 25% delay as in original
-          onComplete: () => {
-            console.log('SVG animation completed');
-          }
-        });
-        
-        console.log('GSAP SVG animation applied');
-      } else {
-        console.error('SVG element not found');
-      }
-    } else {
-      console.error('Hello div not found');
     }
   }
 
