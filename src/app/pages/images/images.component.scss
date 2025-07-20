@@ -23,6 +23,7 @@
 }
 
 .hello__div {
+    pointer-events: auto; /* Restore pointer events for this element */
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -58,7 +59,7 @@
     justify-items: center;
     align-items: center;
     z-index: 1;
-    margin-top: -100vh; /* Pull up to overlap with the sticky text container */
+    margin-top: -100vh; 
 }
 
 img {

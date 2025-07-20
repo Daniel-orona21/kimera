@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 
 @Component({
   selector: 'app-images',
+
   templateUrl: './images.component.html',
   styleUrl: './images.component.scss',
 })
@@ -15,6 +16,7 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
   private animationFrame: number | null = null;
   private skewSetter: any = null;
   private currentScroller: HTMLElement | Window = window;
+  private helloAnimationDone = false; // Flag to run animation only once
 
   constructor(private el: ElementRef) {}
 
@@ -51,6 +53,7 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
     }
     
     this.animationFrame = requestAnimationFrame(() => {
+      this.animateHello(); // Trigger animation on first scroll
       this.updateSkewEffect();
       this.checkVisibility();
     });
@@ -98,6 +101,17 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
       this.isInView = false;
       this.stopSkewEffect();
     }
+  }
+
+  private animateHello() {
+    if (this.helloAnimationDone) return; // Exit if animation has already run
+    this.helloAnimationDone = true; // Set flag to true
+
+    // Animate the .hola element using GSAP
+    gsap.fromTo('.hola', 
+      { y: 100, opacity: 0 }, // from state
+      { y: 0, opacity: 1, duration: 1.5, ease: 'power2.out', delay: 0.2 } // to state
+    );
   }
 
   private startSkewEffect() {
