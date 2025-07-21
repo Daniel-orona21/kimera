@@ -33,7 +33,7 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
         console.warn('Images component: Required elements not found');
         return;
       }
-      this.skewSetter = gsap.quickTo(this.images, "skewY", { duration: 0.1 });
+      this.skewSetter = gsap.quickTo(this.images, "skewY", { duration: 1 });
       this.lastTime = performance.now();
       this.currentScroller.addEventListener('scroll', this.handleScroll.bind(this), { passive: true });
     
@@ -75,8 +75,8 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
     const velocity = deltaScroll / deltaTime;
     
     // Apply skew based on velocity - increased sensitivity
-    const clamp = gsap.utils.clamp(-25, 25);
-    const skewValue = clamp(velocity * -8); // Increased multiplier for more noticeable effect
+    const clamp = gsap.utils.clamp(-80, 80);
+    const skewValue = clamp(velocity * -20); // Increased multiplier for more noticeable effect
     
     if (this.skewSetter) {
       this.skewSetter(skewValue);
@@ -109,8 +109,8 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
 
     // Animate the .hola element using GSAP
     gsap.fromTo('.hola', 
-      { y: 100, opacity: 0 }, // from state
-      { y: 0, opacity: 1, duration: 1.5, ease: 'power2.out', delay: 0.2 } // to state
+      { y: 0, opacity: 0 }, // from state
+      { y: 0, opacity: 1, duration: 1.5, ease: 'power2.out', delay: 0.5 } // to state
     );
   }
 
