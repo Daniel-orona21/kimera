@@ -107,11 +107,11 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
     if (this.helloAnimationDone) return; // Exit if animation has already run
     this.helloAnimationDone = true; // Set flag to true
 
-    // Animate the .hola element using GSAP
-    gsap.fromTo('.hola', 
-      { y: 0, opacity: 0 }, // from state
-      { y: 0, opacity: 1, duration: 1.5, ease: 'power2.out', delay: 0.5 } // to state
-    );
+    // Apply the tracking-in-contract animation class
+      const holaElement = document.querySelector('.hola') as HTMLElement;
+      if (holaElement) {
+        holaElement.classList.add('tracking-in-contract');
+      }
   }
 
   private startSkewEffect() {

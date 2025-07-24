@@ -36,12 +36,13 @@
 .hello__div p {
     font-family: termina, sans-serif;
     font-style: normal;
-    font-size: 6vw;
+    font-size: 5vw;
     text-align: center;
     color: white;
     margin: 0;
     -webkit-text-stroke-width: 1.5px;
     -webkit-text-stroke-color: white;
+    flex-wrap: nowrap !important;
 }
 
 .images {
@@ -97,4 +98,22 @@ img:nth-child(7) {
 
 img:nth-child(8) {
     grid-area: 26/5/30/15;
+}
+
+.tracking-in-contract {
+	animation: tracking-in-contract 2s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+} 
+
+@keyframes tracking-in-contract {
+  0% {
+    letter-spacing: .5em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    letter-spacing: normal;
+    opacity: 1;
+  }
 }
