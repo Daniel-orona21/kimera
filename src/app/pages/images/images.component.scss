@@ -16,14 +16,14 @@
     height: 100vh;
     width: 100%;
     z-index: 2;
-    pointer-events: none; /* Allow scroll/clicks to pass through */
+    pointer-events: none; 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .hello__div {
-    pointer-events: auto; /* Restore pointer events for this element */
+    pointer-events: auto; 
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -40,13 +40,16 @@
     text-align: center;
     color: white;
     margin: 0;
+    opacity: 0;
     -webkit-text-stroke-width: 1.5px;
     -webkit-text-stroke-color: white;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    // letter-spacing: 0.2em;
 }
 
 .images {
     position: relative;
-    padding-top: 60vh;
+    padding-top: 40vh;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;

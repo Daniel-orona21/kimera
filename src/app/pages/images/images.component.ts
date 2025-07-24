@@ -1,6 +1,7 @@
-import { Component, AfterViewInit, ElementRef, Input, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, Input, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { gsap } from 'gsap';
-
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-images',
 
@@ -16,35 +17,56 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
   private animationFrame: number | null = null;
   private skewSetter: any = null;
   private currentScroller: HTMLElement | Window = window;
-  private helloAnimationDone = false; // Flag to run animation only once
+  private ctx!: gsap.Context;
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef, @Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngAfterViewInit() {
-    try {
-      const componentElement = this.el.nativeElement;
-      const imagesContainer = componentElement.querySelector('.images-container');
-      this.images = gsap.utils.toArray<HTMLElement>(componentElement.querySelectorAll('.images img'));
-      if (this.scroller) {
-        this.currentScroller = this.scroller;
-      }
+    gsap.registerPlugin(ScrollTrigger);
 
-      if (!imagesContainer || this.images.length === 0) {
-        console.warn('Images component: Required elements not found');
-        return;
-      }
-      this.skewSetter = gsap.quickTo(this.images, "skewY", { duration: 1 });
-      this.lastTime = performance.now();
-      this.currentScroller.addEventListener('scroll', this.handleScroll.bind(this), { passive: true });
-    
-      this.checkVisibility();
-      setTimeout(() => {
+    this.ctx = gsap.context(() => {
+      try {
+        if (isPlatformBrowser(this.platformId)) {
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: ".images-container",
+              scroller: this.scroller || window,
+              scrub: 1, // Suaviza el seguimiento del scroll
+              start: "top 20%",
+              end: "bottom 50%",
+              // markers: true, // Puedes quitar esto en producción
+            }
+          });
+
+          tl.to(".hola", { opacity: 1, duration: 3, ease: "power1.out" })
+            .to(".hola", { opacity: 1, duration: 4 }) 
+            .to(".hola", { opacity: 0, duration: 3, ease: "power1.in" }); 
+        }
+        
+        const componentElement = this.el.nativeElement;
+        const imagesContainer = componentElement.querySelector('.images-container');
+        this.images = gsap.utils.toArray<HTMLElement>(componentElement.querySelectorAll('.images img'));
+        if (this.scroller) {
+          this.currentScroller = this.scroller;
+        }
+
+        if (!imagesContainer || this.images.length === 0) {
+          console.warn('Images component: Required elements not found');
+          return;
+        }
+        this.skewSetter = gsap.quickTo(this.images, "skewY", { duration: 1 });
+        this.lastTime = performance.now();
+        this.currentScroller.addEventListener('scroll', this.handleScroll, { passive: true });
+      
         this.checkVisibility();
-      }, 100);
+        setTimeout(() => {
+          this.checkVisibility();
+        }, 100);
 
-    } catch (error) {
-      console.error('Error initializing Images component:', error);
-    }
+      } catch (error) {
+        console.error('Error initializing Images component:', error);
+      }
+    }, this.el);
   }
 
   private handleScroll = () => {
@@ -53,7 +75,6 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
     }
     
     this.animationFrame = requestAnimationFrame(() => {
-      this.animateHello(); // Trigger animation on first scroll
       this.updateSkewEffect();
       this.checkVisibility();
     });
@@ -103,17 +124,6 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private animateHello() {
-    if (this.helloAnimationDone) return; // Exit if animation has already run
-    this.helloAnimationDone = true; // Set flag to true
-
-    // Animate the .hola element using GSAP
-    gsap.fromTo('.hola', 
-      { y: 0, opacity: 0 }, // from state
-      { y: 0, opacity: 1, duration: 1.5, ease: 'power2.out', delay: 0.5 } // to state
-    );
-  }
-
   private startSkewEffect() {
     // Reset skew when entering
     if (this.skewSetter) {
@@ -135,6 +145,7 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
     if (this.currentScroller) {
       this.currentScroller.removeEventListener('scroll', this.handleScroll);
     }
+    this.ctx?.revert();
     // Reset any ongoing animations
     gsap.killTweensOf(this.images);
   }
