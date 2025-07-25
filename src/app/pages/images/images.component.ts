@@ -47,8 +47,9 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
             trigger: ".images-container",
             scroller: this.currentScroller,
             scrub: 1,
+            markers: true,
             start: "top 20%",
-            end: "bottom 50%",
+            end: "bottom 80%",
           }
         });
 
