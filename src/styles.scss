@@ -9,3 +9,32 @@
     font-weight: 200;
     font-style: normal;
 }
+
+html {
+    scroll-behavior: auto !important; /* Desactivar smooth scroll nativo */
+    overscroll-behavior: none; /* Evitar bounce en mobile */
+}
+
+body {
+    overscroll-behavior: none;
+    overflow-x: hidden;
+}
+
+/* Optimizaciones para el rendimiento del scroll */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeSpeed;
+}
+
+/* Evitar el lag en imágenes y elementos transformados */
+img {
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* Optimización para elementos con GSAP */
+[data-gsap] {
+    will-change: transform;
+    transform: translateZ(0);
+}

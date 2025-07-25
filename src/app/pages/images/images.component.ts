@@ -2,66 +2,92 @@ import { Component, AfterViewInit, ElementRef, Input, OnDestroy, Inject, PLATFOR
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { isPlatformBrowser } from '@angular/common';
+
 @Component({
   selector: 'app-images',
-
   templateUrl: './images.component.html',
   styleUrl: './images.component.scss',
 })
 export class ImagesComponent implements AfterViewInit, OnDestroy {
-  @Input() scroller: HTMLElement | null = null;
+  @Input() scroller: HTMLElement | ElementRef<HTMLElement> | null = null;
   private images: HTMLElement[] = [];
-  private isInView = false;
-  private lastScrollY = 0;
-  private lastTime = 0;
-  private animationFrame: number | null = null;
-  private skewSetter: any = null;
   private currentScroller: HTMLElement | Window = window;
   private ctx!: gsap.Context;
+  private skewTrigger: ScrollTrigger | null = null;
 
   constructor(private el: ElementRef, @Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngAfterViewInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     gsap.registerPlugin(ScrollTrigger);
 
     this.ctx = gsap.context(() => {
       try {
-        if (isPlatformBrowser(this.platformId)) {
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: ".images-container",
-              scroller: this.scroller || window,
-              scrub: 1, // Suaviza el seguimiento del scroll
-              start: "top 20%",
-              end: "bottom 50%",
-              // markers: true, // Puedes quitar esto en producción
-            }
-          });
-
-          tl.to(".hola", { opacity: 1, duration: 3, ease: "power1.out" })
-            .to(".hola", { opacity: 1, duration: 4 }) 
-            .to(".hola", { opacity: 0, duration: 3, ease: "power1.in" }); 
+        // Configurar el scroller correcto
+        if (this.scroller) {
+          this.currentScroller = this.scroller instanceof ElementRef ? 
+            this.scroller.nativeElement : 
+            this.scroller;
+        } else {
+          this.currentScroller = window;
         }
         
         const componentElement = this.el.nativeElement;
-        const imagesContainer = componentElement.querySelector('.images-container');
         this.images = gsap.utils.toArray<HTMLElement>(componentElement.querySelectorAll('.images img'));
-        if (this.scroller) {
-          this.currentScroller = this.scroller;
-        }
 
-        if (!imagesContainer || this.images.length === 0) {
-          console.warn('Images component: Required elements not found');
+        if (this.images.length === 0) {
+          console.warn('Images component: No images found');
           return;
         }
-        this.skewSetter = gsap.quickTo(this.images, "skewY", { duration: 1 });
-        this.lastTime = performance.now();
-        this.currentScroller.addEventListener('scroll', this.handleScroll, { passive: true });
-      
-        this.checkVisibility();
-        setTimeout(() => {
-          this.checkVisibility();
-        }, 100);
+
+        // Timeline para el texto con ScrollTrigger
+        const textTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".images-container",
+            scroller: this.currentScroller,
+            scrub: 1,
+            start: "top 20%",
+            end: "bottom 50%",
+          }
+        });
+
+        textTimeline.to(".hola", { opacity: 1, duration: 3, ease: "power1.out" })
+          .to(".hola", { opacity: 1, duration: 4 }) 
+          .to(".hola", { opacity: 0, duration: 3, ease: "power1.in" });
+
+        // Skew effect usando SOLO ScrollTrigger - SIN listeners directos
+        this.skewTrigger = ScrollTrigger.create({
+          trigger: this.el.nativeElement,
+          scroller: this.currentScroller,
+          start: "top bottom",
+          end: "bottom top",
+          onUpdate: (self) => {
+            const velocity = self.getVelocity();
+            const skew = gsap.utils.clamp(-20, 20, velocity / -300);
+            
+            gsap.to(this.images, {
+              skewY: skew,
+              duration: 0.8,
+              ease: "power2.out",
+              overwrite: "auto"
+            });
+          },
+          onLeave: () => {
+            gsap.to(this.images, {
+              skewY: 0,
+              duration: 0.8,
+              ease: "power2.out"
+            });
+          },
+          onEnterBack: () => {
+            gsap.to(this.images, {
+              skewY: 0,
+              duration: 0.5,
+              ease: "power2.out"
+            });
+          }
+        });
 
       } catch (error) {
         console.error('Error initializing Images component:', error);
@@ -69,84 +95,16 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
     }, this.el);
   }
 
-  private handleScroll = () => {
-    if (this.animationFrame) {
-      cancelAnimationFrame(this.animationFrame);
-    }
-    
-    this.animationFrame = requestAnimationFrame(() => {
-      this.updateSkewEffect();
-      this.checkVisibility();
-    });
-  }
-
-  private updateSkewEffect() {
-    if (!this.isInView) return;
-
-    const currentTime = performance.now();
-    const deltaTime = currentTime - this.lastTime;
-    
-    if (deltaTime === 0) return;
-
-    // Get current scroll position
-    const currentScrollY = this.currentScroller === window ? window.scrollY : (this.currentScroller as HTMLElement).scrollTop;
-    const deltaScroll = currentScrollY - this.lastScrollY;
-    
-    // Calculate velocity (pixels per millisecond)
-    const velocity = deltaScroll / deltaTime;
-    
-    // Apply skew based on velocity - increased sensitivity
-    const clamp = gsap.utils.clamp(-80, 80);
-    const skewValue = clamp(velocity * -20); // Increased multiplier for more noticeable effect
-    
-    if (this.skewSetter) {
-      this.skewSetter(skewValue);
-    }
-
-    // Update last values
-    this.lastScrollY = currentScrollY;
-    this.lastTime = currentTime;
-  }
-
-  private checkVisibility() {
-    const containerRect = this.el.nativeElement.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    
-    // Check if the images section is in view
-    const isVisible = containerRect.top < viewportHeight && containerRect.bottom > 0;
-    
-    if (isVisible && !this.isInView) {
-      this.isInView = true;
-      this.startSkewEffect();
-    } else if (!isVisible && this.isInView) {
-      this.isInView = false;
-      this.stopSkewEffect();
-    }
-  }
-
-  private startSkewEffect() {
-    // Reset skew when entering
-    if (this.skewSetter) {
-      this.skewSetter(0);
-    }
-  }
-
-  private stopSkewEffect() {
-    // Reset skew when leaving
-    if (this.skewSetter) {
-      this.skewSetter(0);
-    }
-  }
-
   ngOnDestroy() {
-    if (this.animationFrame) {
-      cancelAnimationFrame(this.animationFrame);
+    // Limpiar ScrollTrigger específico
+    if (this.skewTrigger) {
+      this.skewTrigger.kill();
     }
-    if (this.currentScroller) {
-      this.currentScroller.removeEventListener('scroll', this.handleScroll);
-    }
+    
+    // Limpiar contexto GSAP
     this.ctx?.revert();
-    // Reset any ongoing animations
+    
+    // Reset ongoing animations
     gsap.killTweensOf(this.images);
   }
 }
