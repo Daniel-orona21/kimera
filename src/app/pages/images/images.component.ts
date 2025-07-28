@@ -65,7 +65,7 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
           end: "bottom top",
           onUpdate: (self) => {
             const velocity = self.getVelocity();
-            const skew = gsap.utils.clamp(-60, 60, velocity / -180);
+            const skew = gsap.utils.clamp(-60, 60, velocity / -100);
             
             
             
