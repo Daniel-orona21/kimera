@@ -53,9 +53,12 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
           }
         });
 
-        textTimeline.to(".hola", { opacity: 1, duration: 3, ease: "power1.out" })
-          .to(".hola", { opacity: 1, duration: 4 }) 
-          .to(".hola", { opacity: 0, duration: 3, ease: "power1.in" });
+        textTimeline.fromTo(".hola", 
+          { opacity: 0, letterSpacing: "0.2em" }, // inicia separadas
+          { opacity: 1, letterSpacing: "0.1em", duration: 3, ease: "power2.in" }
+        )
+        .to(".hola", { opacity: 1, duration: 4 }) // Mantiene
+        .to(".hola", { opacity: 0, letterSpacing: "0.2em", duration: 3, ease: "power2.out" }); // Se separan al salir
 
         // Skew effect usando SOLO ScrollTrigger - SIN listeners directos
         this.skewTrigger = ScrollTrigger.create({
