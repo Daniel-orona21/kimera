@@ -39,7 +39,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private h1InitialRect?: DOMRect;
   private h1TargetRect?: DOMRect;
-  private animationEndScroll = 0;
 
   private initialTimer: any;
   private loadingTimer: any;
@@ -165,41 +164,21 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.renderer.addClass(this.cuerpo.nativeElement, 'scroll');
     this.setupScrollTriggerProxy();
     this.lenis?.start();
-    this.prepareScrollAnimation();
-    
-    // Usar requestAnimationFrame para optimizar el scroll listener
-    this.lenis?.on('scroll', this.onScrollOptimized);
+    this.setupGsapAnimation();
   }
 
-  private prepareScrollAnimation(): void {
+  private setupGsapAnimation(): void {
     this.h1InitialRect = this.h1.nativeElement.getBoundingClientRect();
     this.h1TargetRect = this.h1Placeholder.nativeElement.getBoundingClientRect();
-    this.animationEndScroll = this.inicio.nativeElement.offsetHeight / 2;
+
+    if (!this.h1InitialRect || !this.h1TargetRect) {
+      return;
+    }
+
     this.renderer.setStyle(this.h1Wrapper.nativeElement, 'height', `${this.h1InitialRect.height}px`);
     this.renderer.addClass(this.h1.nativeElement, 'moving');
     this.renderer.setStyle(this.h1.nativeElement, 'top', `${this.h1InitialRect.top}px`);
     this.renderer.setStyle(this.h1.nativeElement, 'left', `${this.h1InitialRect.left}px`);
-  }
-
-  private onScrollOptimized = (e: { scroll: number }) => {
-    if (this.scrollAnimationFrame) {
-      cancelAnimationFrame(this.scrollAnimationFrame);
-    }
-    
-    this.scrollAnimationFrame = requestAnimationFrame(() => {
-      this.updateScrollAnimations(e.scroll);
-    });
-  }
-
-  private updateScrollAnimations(scrollY: number) {
-    if (!this.h1InitialRect || !this.h1TargetRect) return;
-
-    const progress = Math.min(scrollY / this.animationEndScroll, 1);
-
-    // Usar transform3d para optimizar rendimiento
-    this.renderer.setStyle(this.header.nativeElement, 'opacity', progress);
-    this.renderer.setStyle(this.subtitulo.nativeElement, 'opacity', 1 - progress);
-    this.renderer.setStyle(this.scrollDownContainer.nativeElement, 'opacity', 1 - progress);
 
     const targetScale = this.h1TargetRect.width / this.h1InitialRect.width;
     const initialCenterX = this.h1InitialRect.left + this.h1InitialRect.width / 2;
@@ -208,19 +187,36 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const targetCenterY = this.h1TargetRect.top + this.h1TargetRect.height / 2;
     const deltaX = targetCenterX - initialCenterX;
     const deltaY = targetCenterY - initialCenterY;
-    const translateX = deltaX * progress;
-    const translateY = deltaY * progress;
-    const scale = 1 - (1 - targetScale) * progress;
 
-    // Usar transform3d para mejor rendimiento
-    const transformValue = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`;
-    this.renderer.setStyle(this.h1.nativeElement, 'transform', transformValue);
-    this.renderer.setStyle(this.h1.nativeElement, 'transform-origin', 'center center');
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: this.inicio.nativeElement,
+        scroller: this.cuerpo.nativeElement,
+        start: 'top top',
+        end: '50% top',
+        scrub: 0.5,
+      },
+    });
 
-    if (progress === 1) {
-      this.renderer.addClass(this.h1.nativeElement, 'in-header');
-    } else {
-      this.renderer.removeClass(this.h1.nativeElement, 'in-header');
-    }
+      tl.to(this.h1.nativeElement, {
+        x: deltaX,
+        y: deltaY,
+        scale: targetScale,
+        webkitTextFillColor: 'black',
+        ease: 'none',
+        onStart: () => {
+          this.renderer.setStyle(this.h1.nativeElement, 'transform-origin', 'center center');
+        }
+      })
+      .fromTo(this.header.nativeElement, {
+        scale: 1.5,
+        ease: 'none'
+      }, {
+        scale: 1,
+        ease: 'none'
+      }, '<')
+    .to(this.header.nativeElement, { opacity: 1 }, '<')
+    .to(this.subtitulo.nativeElement, { opacity: 0 }, '<')
+    .to(this.scrollDownContainer.nativeElement, { opacity: 0 }, '<');
   }
 }

@@ -64,6 +64,7 @@ header {
         display: flex;
         align-items: center;
         justify-content: center;
+        transform: none;
     }
 
     ul {
@@ -83,7 +84,7 @@ header {
             a {
                 cursor: pointer;
                 position: relative;
-
+                color: black;
             }
             &::before {
                 content: '';
@@ -151,7 +152,6 @@ header {
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: rgba(255, 255, 255, 0.39);
-        transition: filter 0.8s ease-in-out;
         will-change: filter, transform; /* Añadimos transform a will-change */
 
         &.moving {
@@ -160,11 +160,6 @@ header {
             -webkit-text-fill-color: white; /* Color sólido al moverse */
             top: 0; /* Se establecerá dinámicamente */
             left: 0; /* Se establecerá dinámicamente */
-            transition: -webkit-text-fill-color 0.3s ease-in-out, filter 0.3s ease-in-out;
-
-            &.in-header {
-                -webkit-text-fill-color: black;
-            }
         }
     }
 
@@ -181,7 +176,7 @@ header {
         font-size: 1.5vw;
         font-weight: normal;
         
-        transition: all .5s ease;
+        transition: opacity .5s ease;
         opacity: 0;
 
        &.visible {
@@ -214,7 +209,7 @@ header {
         align-items: center;
         color: white;
         opacity: 0;
-        transition: all 1s ease;
+        transition: opacity 1s ease, transform 1s ease;
         
         .scroll-down {
             background-color: transparent;
@@ -247,10 +242,6 @@ header {
         h1 {
             background-size: 100% 100%;
             filter: drop-shadow(0.05em 0.025em 0.04em rgba(0, 0, 0, 0.8));
-
-            &.in-header {
-                filter: none !important;
-            }
         }
     }
 }
