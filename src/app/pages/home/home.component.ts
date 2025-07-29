@@ -198,23 +198,30 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       },
     });
 
-      tl.to(this.h1.nativeElement, {
-        x: deltaX,
-        y: deltaY,
-        scale: targetScale,
-        webkitTextFillColor: 'black',
-        ease: 'none',
-        onStart: () => {
-          this.renderer.setStyle(this.h1.nativeElement, 'transform-origin', 'center center');
-        }
-      })
-      .fromTo(this.header.nativeElement, {
-        scale: 1.5,
-        ease: 'none'
-      }, {
-        scale: 1,
-        ease: 'none'
-      }, '<')
+    tl.fromTo(this.h1.nativeElement, {
+      x: 0,
+      y: 0,
+      scale: 1,
+      webkitTextFillColor: 'white',
+      filter: 'drop-shadow(0.05em 0.025em 0.04em rgba(0, 0, 0, 0.8))',
+    }, {
+      x: deltaX,
+      y: deltaY,
+      scale: targetScale,
+      webkitTextFillColor: 'black',
+      filter: 'drop-shadow(0 0 0 rgba(0, 0, 0, 0))',
+      ease: 'none',
+      onStart: () => {
+        this.renderer.setStyle(this.h1.nativeElement, 'transform-origin', 'center center');
+      }
+    })
+    .fromTo(this.header.nativeElement, {
+      scale: 1.5,
+      ease: 'none'
+    }, {
+      scale: 1,
+      ease: 'none'
+    }, '<')
     .to(this.header.nativeElement, { opacity: 1 }, '<')
     .to(this.subtitulo.nativeElement, { opacity: 0 }, '<')
     .to(this.scrollDownContainer.nativeElement, { opacity: 0 }, '<');
