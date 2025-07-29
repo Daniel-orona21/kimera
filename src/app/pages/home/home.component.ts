@@ -17,7 +17,7 @@ import { ImagesComponent } from "../images/images.component";
 })
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   animationState: 'idle' | 'loading' | 'loaded' = 'idle';
-  playAnimation = true;
+  playAnimation = false;
 
   @HostBinding('class.no-animation')
   get noAnimation(): boolean {

@@ -47,17 +47,17 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
             trigger: ".images-container",
             scroller: this.currentScroller,
             scrub: 1,
-            start: "top 20%",
+            markers: true,
+            start: "top 35%",
             end: "bottom 80%",
           }
         });
 
         textTimeline.fromTo(".hola", 
           { opacity: 0, letterSpacing: "0.2em" }, // inicia separadas
-          { opacity: 1, letterSpacing: "0.1em", duration: 3, ease: "power2.in" }
+          { opacity: 1, letterSpacing: "0em", duration: 1  }
         )
         .to(".hola", { opacity: 1, duration: 4 }) // Mantiene
-        .to(".hola", { opacity: 0, letterSpacing: "0.2em", duration: 3, ease: "power2.out" }); // Se separan al salir
 
         // Skew effect usando SOLO ScrollTrigger - SIN listeners directos
         this.skewTrigger = ScrollTrigger.create({

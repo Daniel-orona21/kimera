@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Gruppo&family=Poiret+One&family=Tangerine:wght@400;700&family=Unbounded:wght@200..900&display=swap');
 :host {
     display: block;
     width: 100%;
@@ -34,16 +35,19 @@
 }
 
 .hello__div p {
-    font-family: termina, sans-serif;
+    font-family: "Unbounded", sans-serif;
+    // font-family: "Poiret One", sans-serif;
+    // font-family: "Tangerine", cursive;
+    // font-family: "Gruppo", sans-serif;
     font-style: normal;
-    font-size: 6vw;
+    font-size: 5vw;
     text-align: center;
     color: white;
     margin: 0;
     opacity: 0;
     -webkit-text-stroke-width: 1.5px;
     -webkit-text-stroke-color: white;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     // letter-spacing: 0.2em;
 }
 
