@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, Renderer2, HostBinding } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, Renderer2, HostBinding, Inject } from '@angular/core';
+import { DOCUMENT, CommonModule } from '@angular/common';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -17,7 +17,7 @@ import { ImagesComponent } from "../images/images.component";
 })
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   animationState: 'idle' | 'loading' | 'loaded' = 'idle';
-  playAnimation = false;
+  playAnimation = true;
 
   @HostBinding('class.no-animation')
   get noAnimation(): boolean {
@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   private lenis: Lenis | null = null;
   private rafHandle: number | null = null;
   private scrollAnimationFrame: number | null = null;
+  private themeColorAnimation: number | null = null;
 
   @ViewChild('cuerpo') cuerpo!: ElementRef<HTMLDivElement>;
   @ViewChild('header') header!: ElementRef<HTMLElement>;
@@ -43,9 +44,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   private initialTimer: any;
   private loadingTimer: any;
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2, @Inject(DOCUMENT) private document: Document) {}
 
   ngOnInit() {
+    this.updateThemeColor('#006241');  // Solo este verde inicial se mantiene
     // Registrar ScrollTrigger una sola vez
     gsap.registerPlugin(ScrollTrigger);
     
@@ -74,17 +76,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.rafHandle) {
       cancelAnimationFrame(this.rafHandle);
     }
+
+    if (this.themeColorAnimation) {
+      cancelAnimationFrame(this.themeColorAnimation);
+    }
     
     // Limpiar ScrollTrigger
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     
     this.lenis?.destroy();
+    const currentThemeColor = this.document.querySelector('meta[name="theme-color"]')?.getAttribute('content') || '#000000';
+    this.transitionThemeColor(currentThemeColor, '#FFFFFF', 500);
   }
 
   ngAfterViewInit() {
     this.initializeLenis();
 
     if (!this.playAnimation) {
+      this.transitionThemeColor('#006241', '#000000', 500);
       this.renderer.addClass(this.subtitulo.nativeElement, 'visible');
       this.renderer.addClass(this.scrollDownContainer.nativeElement, 'visible');
       
@@ -145,12 +154,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const scroll = this.scrollDownContainer.nativeElement;
 
     setTimeout(() => {
+      this.transitionThemeColor('#006241', '#000000', 1000);
       subtituloEl.classList.add('visible');
       setTimeout(() => {
         this.setupScroll();
         scroll.classList.add('visible')
       }, 500);
-    }, 1500);
+    }, 2000);
   }
 
   scrollTo(section: string) {
@@ -165,6 +175,64 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setupScrollTriggerProxy();
     this.lenis?.start();
     this.setupGsapAnimation();
+  }
+
+  private updateThemeColor(color: string): void {
+    const themeColorMeta = this.document.querySelector('meta[name="theme-color"]');
+    if (themeColorMeta) {
+      this.renderer.setAttribute(themeColorMeta, 'content', color);
+    }
+  }
+
+  private transitionThemeColor(startColor: string, endColor: string, duration: number): void {
+    if (this.themeColorAnimation) {
+      cancelAnimationFrame(this.themeColorAnimation);
+    }
+
+    const startRGB = this.hexToRgb(startColor);
+    const endRGB = this.hexToRgb(endColor);
+
+    if (!startRGB || !endRGB) {
+      this.updateThemeColor(endColor);
+      return;
+    }
+
+    let startTime: number;
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const elapsedTime = timestamp - startTime;
+      const progress = Math.min(elapsedTime / duration, 1);
+
+      const currentRGB = {
+        r: Math.round(startRGB.r + (endRGB.r - startRGB.r) * progress),
+        g: Math.round(startRGB.g + (endRGB.g - startRGB.g) * progress),
+        b: Math.round(startRGB.b + (endRGB.b - startRGB.b) * progress)
+      };
+
+      this.updateThemeColor(this.rgbToHex(currentRGB.r, currentRGB.g, currentRGB.b));
+
+      if (progress < 1) {
+        this.themeColorAnimation = requestAnimationFrame(animate);
+      } else {
+        this.themeColorAnimation = null;
+      }
+    };
+
+    this.themeColorAnimation = requestAnimationFrame(animate);
+  }
+
+  private hexToRgb(hex: string): { r: number, g: number, b: number } | null {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
+
+  private rgbToHex(r: number, g: number, b: number): string {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).padStart(6, '0');
   }
 
   private setupGsapAnimation(): void {
@@ -225,5 +293,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     .to(this.header.nativeElement, { opacity: 1 }, '<')
     .to(this.subtitulo.nativeElement, { opacity: 0 }, '<')
     .to(this.scrollDownContainer.nativeElement, { opacity: 0 }, '<');
+
+    ScrollTrigger.create({
+      trigger: this.header.nativeElement,
+      scroller: this.cuerpo.nativeElement,
+      start: 'bottom top',
+      onEnter: () => this.transitionThemeColor('#000000', '#FFFFFF', 300),
+      onLeaveBack: () => this.transitionThemeColor('#FFFFFF', '#000000', 300)
+    });
   }
 }
