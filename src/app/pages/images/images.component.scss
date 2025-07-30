@@ -7,7 +7,7 @@
 .images-container {
     position: relative;
     width: 100%;
-    background-color: #1a1721;
+    background-color: rgb(153, 166, 76);
     color: white;
 }
 
@@ -30,6 +30,7 @@
     flex-direction: column;
     margin: 0 auto;
     text-align: center;
+
     width: 100%;
 
 }
@@ -40,6 +41,7 @@
     // font-family: "Tangerine", cursive;
     // font-family: "Gruppo", sans-serif;
     font-style: normal;
+    flex-wrap: wrap;
     font-size: 5vw;
     text-align: center;
     color: white;
@@ -48,7 +50,6 @@
     -webkit-text-stroke-width: 1.5px;
     -webkit-text-stroke-color: white;
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    // letter-spacing: 0.2em;
 }
 
 .images {
@@ -57,51 +58,57 @@
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    min-height: 150vh;
+    min-height: 200vh;
     display: grid;
-    grid-template-columns: repeat(20, 2%);
-    grid-template-rows: repeat(30, 3%);
+    grid-template-columns: repeat(58, 1.5%);
+    grid-template-rows: repeat(90, 1.2%);
     justify-content: center;
     justify-items: center;
     align-items: center;
     z-index: 1;
-    margin-top: -100vh; 
+    margin-top: -120vh; 
+    
 }
 
 img {
+    // border-radius: 30px;
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
 img:nth-child(1) {
-    grid-area: 1/1/6/8;
+    grid-area: 1/15/15/28;
 }
 
 img:nth-child(2) {
-    grid-area: 3/12/8/20;
+    grid-area: 10/30/25/45;
 }
 
 img:nth-child(3) {
-    grid-area: 9/5/13/15;
+    grid-area: 27/20/40/40;
 }
 
 img:nth-child(4) {
-    grid-area: 14/1/18/8;
+    grid-area: 42/15/57/28;
 }
 
 img:nth-child(5) {
-    grid-area: 16/12/20/19;
+    grid-area: 45/31/53/49;
 }
 
 img:nth-child(6) {
-    grid-area: 20/2/25/9;
+    grid-area: 59/22/75/38;
 }
 
-img:nth-child(7) {
-    grid-area: 22/11/24/20;
-}
+@media (max-width: 768px) {
+    .images {
+        grid-template-columns: repeat(58, 2.4%);
+        grid-template-rows: repeat(90, 1.2%);
+        min-height: 100vh;
+    }
 
-img:nth-child(8) {
-    grid-area: 26/5/30/15;
+    .hello__div p {
+        font-size: 6vw;
+    }
 }

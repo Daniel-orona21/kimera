@@ -67,13 +67,13 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
           end: "bottom top",
           onUpdate: (self) => {
             const velocity = self.getVelocity();
-            const skew = gsap.utils.clamp(-60, 60, velocity / -100);
+            const skew = gsap.utils.clamp(-60, 60, velocity / -150);
             
             
             
             gsap.to(this.images, {
               skewY: skew,
-              duration: 0.8,
+              duration: 1,
               ease: "power2.out",
               overwrite: "auto"
             });
@@ -81,14 +81,14 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
           onLeave: () => {
             gsap.to(this.images, {
               skewY: 0,
-              duration: 0.8,
+              duration: 1,
               ease: "power2.out"
             });
           },
           onEnterBack: () => {
             gsap.to(this.images, {
               skewY: 0,
-              duration: 0.5,
+              duration: 1,
               ease: "power2.out"
             });
           }
