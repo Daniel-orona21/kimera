@@ -47,8 +47,7 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
             trigger: ".images-container",
             scroller: this.currentScroller,
             scrub: 1,
-            markers: true,
-            start: "top 35%",
+            start: "top 25%",
             end: "bottom 80%",
           }
         });
@@ -67,7 +66,10 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
           end: "bottom top",
           onUpdate: (self) => {
             const velocity = self.getVelocity();
-            const skew = gsap.utils.clamp(-60, 60, velocity / -150);
+            // Cambia el divisor según si es móvil o no
+            const isMobile = window.innerWidth <= 768;
+            const divisor = isMobile ? -90 : -150;
+            const skew = gsap.utils.clamp(-60, 60, velocity / divisor);
             
             
             
