@@ -6,23 +6,19 @@
 }
 
 .images-container {
-    position: relative;
+    position: relative !important;
     width: 100%;
-    background-color: white;
     color: white;
 }
 
 .text-container {
     position: sticky;
     top: 0;
-    // background-color: green;
     height: 100vh;
     width: min-content;
     z-index: 2;
     pointer-events: none; 
     display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .hello__div {
@@ -31,14 +27,10 @@
     justify-content: center;
     flex-direction: column;
     margin: 0 auto;
-    // background-color: red;
     padding-left: 3rem;
-    // background-color: rgba(255, 255, 255, 0.504);
-    // backdrop-filter: blur(10px);
 
     .contenedorTexto {
         overflow: hidden;
-
 
         p {
            font-style: normal;
@@ -51,7 +43,6 @@
            -webkit-text-stroke-width: 1.5px;
            -webkit-text-stroke-color: black;
            z-index: 1 !important;
-           // text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
            font-family: "NeueNormal", sans-serif;
            text-transform: uppercase;
         }
@@ -62,7 +53,10 @@
     }
 }
 
-
+// #wrapper {
+//     width: 100%;
+//     background-color: white;
+// }
 
 .images {
     position: relative;
@@ -72,7 +66,7 @@
     margin: 0 auto;
     min-height: 200vh;
     display: grid;
-    grid-template-columns: repeat(58, 1.5%);
+    grid-template-columns: repeat(58, 1.5vw);
     grid-template-rows: repeat(90, 1.2%);
     justify-content: center;
     justify-items: center;
@@ -117,7 +111,53 @@ img:nth-child(6) {
     .images {
         grid-template-columns: repeat(58, 2.4%);
         grid-template-rows: repeat(90, 1.2%);
-        min-height: 100vh;
+        min-height: 180vh;
+        margin-top: -20vh; 
+        z-index: 99;
+        padding-bottom: 10vh;
+
     }
 
+    .text-container {
+        width: 100%;
+        height: 70vh !important;
+        
+        .hello__div {
+            padding-left: 0;
+            padding-top: 6.5rem;
+
+        .contenedorTexto {
+            width: 100%;
+    
+            p {
+               font-size: 10.5vw !important;
+               text-align: center;
+            }
+           }
+        }
+    }
+    
+    img:nth-child(1) {
+        grid-area: 1/13/15/28;
+    }
+    
+    img:nth-child(2) {
+        grid-area: 1/32/15/47;
+    }
+    
+    img:nth-child(3) {
+        grid-area: 25/13/40/28;
+    }
+    
+    img:nth-child(4) {
+        grid-area: 25/32/40/47;
+    }
+    
+    img:nth-child(5) {
+        grid-area: 48/13/63/28;
+    }
+    
+    img:nth-child(6) {
+        grid-area: 48/32/63/47;
+    }   
 }
