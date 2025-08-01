@@ -118,10 +118,11 @@ header {
     height: 100dvh;
     min-height: 100dvh;
     width: 100dvw;
-    background-color: #19322c;
+    background-color: black;
     position: relative;
     overflow: hidden;
     flex-direction: column;
+    transition: background-color 0.3s ease;
 
     .bg-image {
         position: absolute;

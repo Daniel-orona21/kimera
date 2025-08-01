@@ -8,7 +8,7 @@
             <li><a (click)="scrollTo('#ubicacion')">ubicación</a></li>
         </ul>
     </header>
-    <div class="inicio" #inicio [attr.data-state]="animationState">
+    <div class="inicio" #inicio [attr.data-state]="animationState" [style.background-color]="'red'">
         <div
           class="bg-image"
           [attr.transition-style]="animationState === 'loaded' ? 'in:square:center' : null">

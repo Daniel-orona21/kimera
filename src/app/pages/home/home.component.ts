@@ -91,9 +91,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.initializeLenis();
+    this.renderer.setStyle(this.inicio.nativeElement, 'background-color', '#19322c');
 
     if (!this.playAnimation) {
       this.transitionThemeColor('#19322c', '#000000', 500);
+      this.renderer.setStyle(this.inicio.nativeElement, 'background-color', 'black');
       this.renderer.addClass(this.subtitulo.nativeElement, 'visible');
       this.renderer.addClass(this.scrollDownContainer.nativeElement, 'visible');
       
@@ -147,6 +149,74 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     
     // Refrescar ScrollTrigger después de configuración
     ScrollTrigger.addEventListener("refresh", () => this.lenis?.resize());
+  }
+
+  private setupGsapAnimation(): void {
+    this.h1InitialRect = this.h1.nativeElement.getBoundingClientRect();
+    this.h1TargetRect = this.h1Placeholder.nativeElement.getBoundingClientRect();
+
+    if (!this.h1InitialRect || !this.h1TargetRect) {
+      return;
+    }
+
+    this.renderer.setStyle(this.h1Wrapper.nativeElement, 'height', `${this.h1InitialRect.height}px`);
+    this.renderer.addClass(this.h1.nativeElement, 'moving');
+    this.renderer.setStyle(this.h1.nativeElement, 'top', `${this.h1InitialRect.top}px`);
+    this.renderer.setStyle(this.h1.nativeElement, 'left', `${this.h1InitialRect.left}px`);
+
+    const targetScale = this.h1TargetRect.width / this.h1InitialRect.width;
+    const initialCenterX = this.h1InitialRect.left + this.h1InitialRect.width / 2;
+    const initialCenterY = this.h1InitialRect.top + this.h1InitialRect.height / 2;
+    const targetCenterX = this.h1TargetRect.left + this.h1TargetRect.width / 2;
+    const targetCenterY = this.h1TargetRect.top + this.h1TargetRect.height / 2;
+    const deltaX = targetCenterX - initialCenterX;
+    const deltaY = targetCenterY - initialCenterY;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: this.inicio.nativeElement,
+        scroller: this.cuerpo.nativeElement,
+        start: 'top top',
+        end: '50% top',
+        scrub: 0.5,
+      },
+    });
+
+    tl.fromTo(this.h1.nativeElement, {
+      x: 0,
+      y: 0,
+      scale: 1,
+      webkitTextFillColor: 'white',
+      filter: 'drop-shadow(0.05em 0.025em 0.04em rgba(0, 0, 0, 0.8))',
+    }, {
+      x: deltaX,
+      y: deltaY,
+      scale: targetScale,
+      webkitTextFillColor: 'black',
+      filter: 'drop-shadow(0 0 0 rgba(0, 0, 0, 0))',
+      ease: 'none',
+      onStart: () => {
+        this.renderer.setStyle(this.h1.nativeElement, 'transform-origin', 'center center');
+      }
+    })
+    .fromTo(this.header.nativeElement, {
+      scale: 1.5,
+      ease: 'none'
+    }, {
+      scale: 1,
+      ease: 'none'
+    }, '<')
+    .to(this.header.nativeElement, { opacity: 1 }, '<')
+    .to(this.subtitulo.nativeElement, { opacity: 0 }, '<')
+    .to(this.scrollDownContainer.nativeElement, { opacity: 0 }, '<');
+
+    ScrollTrigger.create({
+      trigger: this.header.nativeElement,
+      scroller: this.cuerpo.nativeElement,
+      start: 'bottom top',
+      onEnter: () => this.transitionThemeColor('#000000', '#FFFFFF', 300),
+      onLeaveBack: () => this.transitionThemeColor('#FFFFFF', '#000000', 300)
+    });
   }
 
   onAnimationEnd() {
@@ -233,73 +303,5 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private rgbToHex(r: number, g: number, b: number): string {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).padStart(6, '0');
-  }
-
-  private setupGsapAnimation(): void {
-    this.h1InitialRect = this.h1.nativeElement.getBoundingClientRect();
-    this.h1TargetRect = this.h1Placeholder.nativeElement.getBoundingClientRect();
-
-    if (!this.h1InitialRect || !this.h1TargetRect) {
-      return;
-    }
-
-    this.renderer.setStyle(this.h1Wrapper.nativeElement, 'height', `${this.h1InitialRect.height}px`);
-    this.renderer.addClass(this.h1.nativeElement, 'moving');
-    this.renderer.setStyle(this.h1.nativeElement, 'top', `${this.h1InitialRect.top}px`);
-    this.renderer.setStyle(this.h1.nativeElement, 'left', `${this.h1InitialRect.left}px`);
-
-    const targetScale = this.h1TargetRect.width / this.h1InitialRect.width;
-    const initialCenterX = this.h1InitialRect.left + this.h1InitialRect.width / 2;
-    const initialCenterY = this.h1InitialRect.top + this.h1InitialRect.height / 2;
-    const targetCenterX = this.h1TargetRect.left + this.h1TargetRect.width / 2;
-    const targetCenterY = this.h1TargetRect.top + this.h1TargetRect.height / 2;
-    const deltaX = targetCenterX - initialCenterX;
-    const deltaY = targetCenterY - initialCenterY;
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: this.inicio.nativeElement,
-        scroller: this.cuerpo.nativeElement,
-        start: 'top top',
-        end: '50% top',
-        scrub: 0.5,
-      },
-    });
-
-    tl.fromTo(this.h1.nativeElement, {
-      x: 0,
-      y: 0,
-      scale: 1,
-      webkitTextFillColor: 'white',
-      filter: 'drop-shadow(0.05em 0.025em 0.04em rgba(0, 0, 0, 0.8))',
-    }, {
-      x: deltaX,
-      y: deltaY,
-      scale: targetScale,
-      webkitTextFillColor: 'black',
-      filter: 'drop-shadow(0 0 0 rgba(0, 0, 0, 0))',
-      ease: 'none',
-      onStart: () => {
-        this.renderer.setStyle(this.h1.nativeElement, 'transform-origin', 'center center');
-      }
-    })
-    .fromTo(this.header.nativeElement, {
-      scale: 1.5,
-      ease: 'none'
-    }, {
-      scale: 1,
-      ease: 'none'
-    }, '<')
-    .to(this.header.nativeElement, { opacity: 1 }, '<')
-    .to(this.subtitulo.nativeElement, { opacity: 0 }, '<')
-    .to(this.scrollDownContainer.nativeElement, { opacity: 0 }, '<');
-
-    ScrollTrigger.create({
-      trigger: this.header.nativeElement,
-      scroller: this.cuerpo.nativeElement,
-      start: 'bottom top',
-      onEnter: () => this.transitionThemeColor('#000000', '#FFFFFF', 300),
-      onLeaveBack: () => this.transitionThemeColor('#FFFFFF', '#000000', 300)
-    });
   }
 }
