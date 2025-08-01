@@ -1,10 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap');
+@font-face {
+    font-family: 'NeueThin';
+    src: url('./assets/fonts/NeueHaasDisplayXThin.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NeueNormal';
+    src: url('./assets/fonts/NeueHaasDisplayRoman.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+@font-face {
+    font-family: 'NeueBold';
+    src: url('./assets/fonts/NeueHaasDisplayBlack.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Onest", sans-serif;
+    font-family: 'NeueNormal', sans-serif;
     font-optical-sizing: auto;
     font-weight: 200;
     font-style: normal;

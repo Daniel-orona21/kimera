@@ -1,16 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Gruppo&family=Poiret+One&family=Tangerine:wght@400;700&family=Unbounded:wght@200..900&display=swap');
-@font-face {
-    font-family: 'NeueHass';
-    src: url('../../../assets/fonts/NeueHaasDisplayRoman.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'NeueHassLight';
-    src: url('../../../assets/fonts/NeueHaasDisplayXThin.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
+
 :host {
     display: block;
     width: 100%;
@@ -63,12 +52,12 @@
            -webkit-text-stroke-color: black;
            z-index: 1 !important;
            // text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-           font-family: "NeueHass", sans-serif;
+           font-family: "NeueNormal", sans-serif;
            text-transform: uppercase;
         }
 
         .bold {
-            font-family: "NeueHassLight", sans-serif !important;
+            font-family: "NeueThin", sans-serif !important;
         }
     }
 }
