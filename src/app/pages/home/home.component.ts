@@ -17,7 +17,7 @@ import { ImagesComponent } from "../images/images.component";
 })
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   animationState: 'idle' | 'loading' | 'loaded' = 'idle';
-  playAnimation = false;
+  playAnimation = true;
 
   @HostBinding('class.no-animation')
   get noAnimation(): boolean {
@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private renderer: Renderer2, @Inject(DOCUMENT) private document: Document) {}
 
   ngOnInit() {
-    this.updateThemeColor('#006241');  // Solo este verde inicial se mantiene
+    this.updateThemeColor('#19322c');  // Solo este verde inicial se mantiene
     // Registrar ScrollTrigger una sola vez
     gsap.registerPlugin(ScrollTrigger);
     
@@ -93,7 +93,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initializeLenis();
 
     if (!this.playAnimation) {
-      this.transitionThemeColor('#006241', '#000000', 500);
+      this.transitionThemeColor('#19322c', '#000000', 500);
       this.renderer.addClass(this.subtitulo.nativeElement, 'visible');
       this.renderer.addClass(this.scrollDownContainer.nativeElement, 'visible');
       
@@ -154,7 +154,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const scroll = this.scrollDownContainer.nativeElement;
 
     setTimeout(() => {
-      this.transitionThemeColor('#006241', '#000000', 1000);
+      this.transitionThemeColor('#19322c', '#000000', 1000);
       subtituloEl.classList.add('visible');
       setTimeout(() => {
         this.setupScroll();

@@ -1,4 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Gruppo&family=Poiret+One&family=Tangerine:wght@400;700&family=Unbounded:wght@200..900&display=swap');
+@font-face {
+    font-family: 'NeueHass';
+    src: url('../../../assets/fonts/NeueHaasDisplayRoman.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'NeueHassLight';
+    src: url('../../../assets/fonts/NeueHaasDisplayXThin.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
 :host {
     display: block;
     width: 100%;
@@ -7,15 +19,16 @@
 .images-container {
     position: relative;
     width: 100%;
-    background-color: rgb(153, 166, 76);
+    background-color: white;
     color: white;
 }
 
 .text-container {
     position: sticky;
     top: 0;
+    // background-color: green;
     height: 100vh;
-    width: 100%;
+    width: min-content;
     z-index: 2;
     pointer-events: none; 
     display: flex;
@@ -29,28 +42,38 @@
     justify-content: center;
     flex-direction: column;
     margin: 0 auto;
-    text-align: center;
+    // background-color: red;
+    padding-left: 3rem;
+    // background-color: rgba(255, 255, 255, 0.504);
+    // backdrop-filter: blur(10px);
 
-    width: 100%;
+    .contenedorTexto {
+        overflow: hidden;
 
+
+        p {
+           font-style: normal;
+           flex-wrap: wrap;
+           font-size: 4.5vw;
+           text-align: left;
+           color: rgb(0, 0, 0);
+           margin: 0 !important; 
+           opacity: 1;
+           -webkit-text-stroke-width: 1.5px;
+           -webkit-text-stroke-color: black;
+           z-index: 1 !important;
+           // text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+           font-family: "NeueHass", sans-serif;
+           text-transform: uppercase;
+        }
+
+        .bold {
+            font-family: "NeueHassLight", sans-serif !important;
+        }
+    }
 }
 
-.hello__div p {
-    font-family: "Unbounded", sans-serif;
-    // font-family: "Poiret One", sans-serif;
-    // font-family: "Tangerine", cursive;
-    // font-family: "Gruppo", sans-serif;
-    font-style: normal;
-    flex-wrap: wrap;
-    font-size: 5vw;
-    text-align: center;
-    color: white;
-    margin: 0;
-    opacity: 0;
-    -webkit-text-stroke-width: 1.5px;
-    -webkit-text-stroke-color: white;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
+
 
 .images {
     position: relative;
@@ -67,38 +90,38 @@
     align-items: center;
     z-index: 1;
     margin-top: -120vh; 
-    
 }
 
 img {
     // border-radius: 30px;
     width: 100%;
     height: 100%;
+    z-index: 2 !important;
     object-fit: cover;
 }
 
 img:nth-child(1) {
-    grid-area: 1/15/15/28;
+    grid-area: 1/29/15/42;
 }
 
 img:nth-child(2) {
-    grid-area: 10/30/25/45;
+    grid-area: 10/44/25/59;
 }
 
 img:nth-child(3) {
-    grid-area: 27/20/40/40;
+    grid-area: 27/34/40/54;
 }
 
 img:nth-child(4) {
-    grid-area: 42/15/57/28;
+    grid-area: 42/29/57/42;
 }
 
 img:nth-child(5) {
-    grid-area: 45/31/53/49;
+    grid-area: 45/45/53/59;
 }
 
 img:nth-child(6) {
-    grid-area: 59/22/75/38;
+    grid-area: 59/36/75/52;
 }
 
 @media (max-width: 768px) {

@@ -118,7 +118,7 @@ header {
     height: 100dvh;
     min-height: 100dvh;
     width: 100dvw;
-    background-color: #006241;
+    background-color: #19322c;
     position: relative;
     overflow: hidden;
     flex-direction: column;
@@ -128,7 +128,7 @@ header {
         inset: 0;
         width: 100%;
         height: 100%;
-        background-image: url('../../../assets/images/fondo.jpg');
+        background-image: url('../../../assets/images/3.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -145,7 +145,7 @@ header {
         font-size: 12vw;
         font-weight: normal;
         padding: 0.1em;
-        background-image: linear-gradient(to top, white 100%, transparent 0%);
+        background-image: linear-gradient(to top, rgb(255, 255, 255) 100%, transparent 0%);
         background-size: 100% 0%;
         background-position: bottom;
         background-repeat: no-repeat;
