@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="cards">
+      <div 
+        *ngFor="let item of carouselItems; let i = index" 
+        [class]="getAllClasses(i)"
+        (click)="setCurrentIndex(i)"
+        [id]="'song-' + (i + 1)">
+        <img [src]="item.imageUrl" [alt]="item.title">
+      </div>
+    </div>
+    <div class="player">
+      <div class="upper-part">
+        <div class="info-area" [class]="getInfoTransformClass()">
+          <div 
+            *ngFor="let item of carouselItems; let i = index" 
+            class="song-info" 
+            [id]="'song-info-' + (i + 1)">
+            <div class="title">{{ item.title }}</div>
+            <div class="sub-line">
+              <div class="subtitle">{{ item.subtitle }}</div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

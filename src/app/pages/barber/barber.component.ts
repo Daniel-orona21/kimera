@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HeartViewerComponent } from '../../shared/components/heart-viewer/heart-viewer.component';
+import { HeartViewerComponent } from '../productos/heart-viewer/heart-viewer.component';
 
 @Component({
   selector: 'app-barber',

@@ -1,12 +1,13 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeartViewerComponent } from '../../shared/components/heart-viewer/heart-viewer.component';
+import { HeartViewerComponent } from '../heart-viewer/heart-viewer.component';
 import * as THREE from 'three';
+import { CarouselComponent } from "../carousel/carousel.component";
 
 @Component({
   selector: 'app-model-section',
   standalone: true,
-  imports: [CommonModule, HeartViewerComponent],
+  imports: [CommonModule, HeartViewerComponent, CarouselComponent, CarouselComponent ],
   templateUrl: './model-section.component.html',
   styleUrls: ['./model-section.component.scss']
 })

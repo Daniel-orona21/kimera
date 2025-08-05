@@ -8,8 +8,8 @@ import { TattooComponent } from "../tattoo/tattoo.component";
 import { ProductosComponent } from "../productos/productos.component";
 import { UbicacionComponent } from "../ubicacion/ubicacion.component";
 import { ImagesComponent } from "../images/images.component";
-import { ModelSectionComponent } from '../model-section/model-section.component';
-import { HeartViewerComponent } from '../../shared/components/heart-viewer/heart-viewer.component';
+import { ModelSectionComponent } from '../productos/model-section/model-section.component';
+import { HeartViewerComponent } from '../productos/heart-viewer/heart-viewer.component';
 import * as THREE from 'three';
 
 @Component({
@@ -45,6 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('subtitulo') subtitulo!: ElementRef<HTMLElement>;
   @ViewChild('scrollDownContainer') scrollDownContainer!: ElementRef<HTMLElement>;
   @ViewChild(ModelSectionComponent, { read: ElementRef }) modelSection!: ElementRef;
+  @ViewChild('carousel', { read: ElementRef }) carousel!: ElementRef;
 
   private model?: THREE.Group;
 
@@ -288,7 +289,53 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       .to(this.header.nativeElement.querySelectorAll('a'), { color: '#ffffff', duration: 0.3 }, '<')
       .to(this.h1.nativeElement, { color: '#FFFFFF', webkitTextFillColor: '#FFFFFF', duration: 0.3 }, '<');
 
-    // La animación de escala se mantiene igual
+    // 2. Animación para mostrar el carousel cuando se llega al contenido1
+    const carouselElement = this.modelSection.nativeElement.querySelector('.contenido1 .sombra');
+    if (carouselElement) {
+      // Inicialmente oculto
+      gsap.set(carouselElement, { opacity: 0, y: 0, visibility: 'hidden' });
+      
+      const carouselTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: this.modelSection.nativeElement.querySelector('.contenido1'),
+          scroller: this.cuerpo.nativeElement,
+          start: 'top top',
+          end: 'bottom bottom',
+          toggleActions: 'play reverse play reverse'
+        }
+      });
+
+      carouselTl.to(carouselElement, { 
+        opacity: 1, 
+        y: 0, 
+        visibility: 'visible',
+      });
+    }
+
+    // 3. Animación para mostrar el centro2 cuando se llega al contenido2
+    const centro2Element = this.modelSection.nativeElement.querySelector('.contenido2 .centro2');
+    if (centro2Element) {
+      // Inicialmente oculto
+      gsap.set(centro2Element, { opacity: 0, y: 0, visibility: 'hidden' });
+      
+      const centro2Tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: this.modelSection.nativeElement.querySelector('.contenido2'),
+          scroller: this.cuerpo.nativeElement,
+          start: 'top top',
+          end: 'bottom bottom',
+          toggleActions: 'play reverse play reverse'
+        }
+      });
+
+      centro2Tl.to(centro2Element, { 
+        opacity: 1, 
+        y: 0, 
+        visibility: 'visible',
+      });
+    }
+
+    // 4. La animación de escala se mantiene igual
     this.model.scale.set(1, 1, 1);
     const scaleTl = gsap.timeline({
       scrollTrigger: {
