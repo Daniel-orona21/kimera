@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { HeartViewerComponent } from '../../shared/components/heart-viewer/heart-viewer.component';
 
 @Component({
   selector: 'app-barber',
-  imports: [],
+  standalone: true,
+  imports: [HeartViewerComponent],
   templateUrl: './barber.component.html',
   styleUrl: './barber.component.scss'
 })

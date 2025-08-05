@@ -8,16 +8,23 @@ import { TattooComponent } from "../tattoo/tattoo.component";
 import { ProductosComponent } from "../productos/productos.component";
 import { UbicacionComponent } from "../ubicacion/ubicacion.component";
 import { ImagesComponent } from "../images/images.component";
+import { ModelSectionComponent } from '../model-section/model-section.component';
+import { HeartViewerComponent } from '../../shared/components/heart-viewer/heart-viewer.component';
+import * as THREE from 'three';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, BarberComponent, TattooComponent, ProductosComponent, UbicacionComponent, ImagesComponent],
+  standalone: true,
+  imports: [CommonModule, BarberComponent, TattooComponent, ProductosComponent, UbicacionComponent, ImagesComponent, ModelSectionComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   animationState: 'idle' | 'loading' | 'loaded' = 'idle';
   playAnimation = false;
+  currentScroll: number = 0;
+  scrollDirection: number = 1; // 1 for down, -1 for up
+  private previousScroll: number = 0;
 
   @HostBinding('class.no-animation')
   get noAnimation(): boolean {
@@ -37,6 +44,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('h1Wrapper') h1Wrapper!: ElementRef<HTMLElement>;
   @ViewChild('subtitulo') subtitulo!: ElementRef<HTMLElement>;
   @ViewChild('scrollDownContainer') scrollDownContainer!: ElementRef<HTMLElement>;
+  @ViewChild(ModelSectionComponent, { read: ElementRef }) modelSection!: ElementRef;
+
+  private model?: THREE.Group;
 
   private h1InitialRect?: DOMRect;
   private h1TargetRect?: DOMRect;
@@ -101,6 +111,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       
       document.fonts.ready.then(() => {
         this.setupScroll();
+        this.setupModelSectionTrigger();
       });
     }
   }
@@ -121,6 +132,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.rafHandle = requestAnimationFrame(raf);
     };
     this.rafHandle = requestAnimationFrame(raf);
+
+    this.lenis.on('scroll', (e: { scroll: number }) => {
+      // Detect scroll direction
+      if (e.scroll > this.previousScroll) {
+        this.scrollDirection = 1;
+      } else if (e.scroll < this.previousScroll) {
+        this.scrollDirection = -1;
+      }
+      this.previousScroll = e.scroll;
+
+      this.currentScroll = e.scroll;
+      ScrollTrigger.update();
+    });
   }
 
   private setupScrollTriggerProxy() {
@@ -144,8 +168,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       pinType: this.cuerpo.nativeElement.style.transform ? "transform" : "fixed"
     });
 
-    // Sincronizar ScrollTrigger con Lenis de manera optimizada
-    this.lenis?.on('scroll', ScrollTrigger.update);
+    // Ya no es necesario, se maneja arriba
+    // this.lenis?.on('scroll', ScrollTrigger.update);
     
     // Refrescar ScrollTrigger después de configuración
     ScrollTrigger.addEventListener("refresh", () => this.lenis?.resize());
@@ -240,9 +264,52 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  onModelReady(model: THREE.Group) {
+    this.model = model;
+    this.setupModelSectionTrigger();
+  }
+
+  private setupModelSectionTrigger(): void {
+    if (!this.model) return; // No hacer nada si el modelo no está listo
+
+    // 1. Timeline para el cambio de color
+    const colorTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: this.modelSection.nativeElement,
+        scroller: this.cuerpo.nativeElement,
+        start: 'top 80%',
+        end: 'bottom 50%',  // Ahora sí: se revierte cuando el FINAL de la sección sale por arriba
+        toggleActions: 'play reverse play reverse'
+      }
+    });
+
+    colorTl.to('.cuerpo', { backgroundColor: '#000000', duration: 0.3 })
+      .to(this.header.nativeElement, { backgroundColor: '#2929296e', duration: 0.3 }, '<')
+      .to(this.header.nativeElement.querySelectorAll('a'), { color: '#ffffff', duration: 0.3 }, '<')
+      .to(this.h1.nativeElement, { color: '#FFFFFF', webkitTextFillColor: '#FFFFFF', duration: 0.3 }, '<');
+
+    // La animación de escala se mantiene igual
+    this.model.scale.set(1, 1, 1);
+    const scaleTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: this.modelSection.nativeElement,
+        scroller: this.cuerpo.nativeElement,
+        start: 'top 0%',    // Empieza cuando el final de la sección está cerca
+        end: 'bottom 200%',      // Termina justo cuando la sección sale por arriba
+        scrub: 0.5,
+      }
+    });
+
+    scaleTl
+      .to(this.model.scale, { x: 5, y: 5, z: 5 })
+      .to(this.model.scale, { x: 5, y: 5, z: 5 })
+      .to(this.model.scale, { x: 1, y: 1, z: 1 });
+  }
+
   private setupScroll(): void {
     this.renderer.addClass(this.cuerpo.nativeElement, 'scroll');
     this.setupScrollTriggerProxy();
+    // Ya no llamamos a setupModelSectionTrigger() aquí
     this.lenis?.start();
     this.setupGsapAnimation();
   }

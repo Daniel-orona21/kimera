@@ -13,6 +13,7 @@
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: hidden;
+    background-color: white;
 
     &.scroll {
         overflow-y: auto;
@@ -51,7 +52,7 @@ header {
     justify-content: center;
     flex-direction: column;
     height: fit-content;
-    background-color: white;
+    background-color: #ffffff;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 
@@ -259,7 +260,7 @@ header {
         // padding-top: 6.5rem;
         display: flex;
         display: flex;
-        background-color: white;
+        // background-color: white;
     }
 }
 

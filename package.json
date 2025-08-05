@@ -18,9 +18,11 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
+    "@types/three": "^0.178.1",
     "gsap": "^3.12.5",
     "lenis": "^1.3.4",
     "rxjs": "~7.8.0",
+    "three": "^0.179.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },

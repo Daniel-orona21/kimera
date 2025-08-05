@@ -1,0 +1,22 @@
+<div class="model-container">
+    <div class="contenidos">
+        <div class="contenido contenido1">
+            <div class="centro">
+                <p>hola</p>
+            </div>
+        </div>
+        
+        <div class="contenido contenido2">
+            <div class="centro">
+                <p>hola 2</p>
+            </div>
+        </div>
+    </div>
+    <div class="viewer-wrapper">
+        <app-heart-viewer 
+            [scrollY]="scrollY" 
+            [scrollDirection]="scrollDirection"
+            (modelReady)="onModelReady($event)">
+        </app-heart-viewer>
+    </div>
+</div>

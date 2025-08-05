@@ -30,6 +30,13 @@
         <div class="seccion">
             <app-images [scroller]="cuerpo" />
         </div>
+        <div class="seccion">
+            <app-model-section 
+              [scrollY]="currentScroll" 
+              [scrollDirection]="scrollDirection"
+              (modelReady)="onModelReady($event)">
+            </app-model-section>
+        </div>
         <div id="barber" class="seccion">
             <app-barber />
         </div>
