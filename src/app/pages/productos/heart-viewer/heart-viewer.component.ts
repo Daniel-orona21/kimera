@@ -44,10 +44,10 @@ export class HeartViewerComponent implements AfterViewInit, OnDestroy {
     this.renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(this.renderer.domElement);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 500);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 5);
     this.scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 100);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 50);
     directionalLight.position.set(1, 1, 1);
     this.scene.add(directionalLight);
   }
@@ -74,11 +74,11 @@ export class HeartViewerComponent implements AfterViewInit, OnDestroy {
             if (Array.isArray(mesh.material)) {
               mesh.material.forEach((mat) => {
                 if ((mat as THREE.MeshStandardMaterial).color) {
-                  (mat as THREE.MeshStandardMaterial).color.set('#ffffff'); // tu color
+                  (mat as THREE.MeshStandardMaterial).color.set('#C1115A'); // tu color
                 }
               });
             } else if ((mesh.material as THREE.MeshStandardMaterial).color) {
-              (mesh.material as THREE.MeshStandardMaterial).color.set('#ffffff'); // tu color
+              (mesh.material as THREE.MeshStandardMaterial).color.set('#C1115A'); // tu color
             }
           }
         });
@@ -105,13 +105,13 @@ export class HeartViewerComponent implements AfterViewInit, OnDestroy {
         }
 
         // 1. Calcular el objetivo de rotación basado en el scroll actual
-        const targetScrollDrivenY = this.scrollY * 0.002;
+        const targetScrollDrivenY = this.scrollY * 0.001;
 
         // 2. Suavizar (LERP) la rotación del scroll para evitar saltos
         this.model.userData['scrollDrivenRotationY'] += (targetScrollDrivenY - this.model.userData['scrollDrivenRotationY']) * 0.05;
         
         // 3. Aplicar una rotación automática constante usando la última dirección del scroll
-        this.model.userData['autoRotationY'] += 0.005 * this.model.userData['lastScrollDirection'];
+        this.model.userData['autoRotationY'] += 0.003 * this.model.userData['lastScrollDirection'];
 
         // 4. Combinar la rotación automática y la rotación por scroll
         this.model.rotation.y = this.model.userData['autoRotationY'] + this.model.userData['scrollDrivenRotationY'];

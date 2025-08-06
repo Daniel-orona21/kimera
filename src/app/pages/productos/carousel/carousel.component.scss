@@ -17,7 +17,8 @@
 }
 
 .container {
-  width: 80vw;
+  width: 100vw;
+  max-width: 1200px;
   height: 100vh;
   transform-style: preserve-3d;
   display: flex;
@@ -31,7 +32,7 @@
 .cards {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 60dvh;
   margin-bottom: 20px;
 }
 
@@ -42,7 +43,6 @@ img {
   object-fit: cover;
 }
 
-// Previous card (left side)
 .card.previous {
   transform: translatex(-40%) scale(.8);
   opacity: .4;
@@ -69,27 +69,36 @@ img {
 
 .player {
   min-width: 320px;
-  padding: 10px;
+  margin: 10px;
   overflow: hidden;
 }
 
 .upper-part {
   position: relative;
+  height: 75px;
   display: flex;
+  overflow: hidden;
   align-items: center;
-  height: 80px;
 }
 
-
-.song-info {
-  width: calc(100% - 32px);
-  display: block;
+.info-area {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  transition: transform .4s ease-in;
 }
 
 .title {
   color: #ffffff;
-  font-size: 68px;
+  font-size: 45px;
+  width: 100%;
+  // flex-wrap: nowrap;
+  display: flex;
+  text-align: center !important;
   // line-height: 94px;
+  // font-family: 'NeueThin', sans-serif;
 }
 
 .sub-line {
@@ -99,17 +108,14 @@ img {
 }
 
 .subtitle, .time {
-  font-size: 12px;
+  
+  font-size: 16px;
+  margin-left: 5px;
   line-height: 16px;
-  color: #c6c5c6;
+  color: white;
+  width: 100%;
 }
 
-.info-area {
-  width: 100%;
-  position: absolute;
-  top: 0;
-  transition: transform .4s ease-in;
-}
 
 // Transform classes for info area
 .info-area.transform-0 {
@@ -117,9 +123,57 @@ img {
 }
 
 .info-area.transform-1 {
-  transform: translateY(-100px);
+  transform: translateY(-70px);
 }
 
 .info-area.transform-2 {
-  transform: translateY(-200px);
+  transform: translateY(-145px);
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .cards {
+    position: relative;
+    width: 100%;
+    height: 40dvh;
+    margin-bottom: 20px;
+  }
+
+  .info-area {
+    align-items: center;
+  }
+
+  .title, .subtitle {
+    text-align: center !important;
+  }
+
+  .title {
+    font-size: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .info-area.transform-0 {
+    transform: translateY(0);
+  }
+  
+  .info-area.transform-1 {
+    transform: translateY(-60px);
+  }
+  
+  .info-area.transform-2 {
+    transform: translateY(-120px);
+  }
+
+  .upper-part {
+    height: 60px;
+  }
+
+  .subtitle, .time {
+    margin-left: 0 !important;
+  }
 }

@@ -49,7 +49,6 @@ export class ImagesComponent implements AfterViewInit, OnDestroy {
             scrub: 1,
             start: "top 50%",
             end: "bottom 0%",
-            markers: true,
           }
         });
 

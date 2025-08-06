@@ -287,6 +287,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     colorTl.to('.cuerpo', { backgroundColor: '#000000', duration: 0.3 })
       .to(this.header.nativeElement, { backgroundColor: '#2929296e', duration: 0.3 }, '<')
       .to(this.header.nativeElement.querySelectorAll('a'), { color: '#ffffff', duration: 0.3 }, '<')
+      .to(this.header.nativeElement, { '--before-bg-color': '#ffffff' }, '<')
       .to(this.h1.nativeElement, { color: '#FFFFFF', webkitTextFillColor: '#FFFFFF', duration: 0.3 }, '<');
 
     // 2. Animación para mostrar el carousel cuando se llega al contenido1
