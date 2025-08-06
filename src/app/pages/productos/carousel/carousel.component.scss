@@ -17,8 +17,7 @@
 }
 
 .container {
-  width: 100vw;
-  max-width: 1200px;
+  width: 80vw;
   height: 100vh;
   transform-style: preserve-3d;
   display: flex;
@@ -32,7 +31,7 @@
 .cards {
   position: relative;
   width: 100%;
-  height: 60dvh;
+  height: 400px;
   margin-bottom: 20px;
 }
 
@@ -43,6 +42,7 @@ img {
   object-fit: cover;
 }
 
+// Previous card (left side)
 .card.previous {
   transform: translatex(-40%) scale(.8);
   opacity: .4;
@@ -69,111 +69,114 @@ img {
 
 .player {
   min-width: 320px;
-  margin: 10px;
+  padding: 10px;
   overflow: hidden;
+  background-color: red;
+  position: relative;
 }
 
 .upper-part {
   position: relative;
-  height: 75px;
   display: flex;
-  overflow: hidden;
   align-items: center;
+  height: auto;
+  min-height: 80px;
+  overflow: hidden;
 }
 
-.info-area {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  transition: transform .4s ease-in;
+.song-info {
+  width: calc(100% - 32px);
+  display: block;
 }
 
 .title {
   color: #ffffff;
-  font-size: 45px;
-  width: 100%;
-  // flex-wrap: nowrap;
-  display: flex;
-  text-align: center !important;
-  // line-height: 94px;
-  // font-family: 'NeueThin', sans-serif;
+  font-size: clamp(24px, 4vw, 68px);
+  line-height: 1.2;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sub-line {
   display: flex;
   justify-content: space-between;
   width: 100%;
+  align-items: center;
+  margin-top: 8px;
 }
 
 .subtitle, .time {
-  
-  font-size: 16px;
-  margin-left: 5px;
-  line-height: 16px;
-  color: white;
-  width: 100%;
+  font-size: clamp(10px, 1.5vw, 12px);
+  line-height: 1.4;
+  color: #c6c5c6;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+.info-area {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform .4s ease-in;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-// Transform classes for info area
+// Transform classes for info area - ahora calculadas dinámicamente
 .info-area.transform-0 {
   transform: translateY(0);
 }
 
 .info-area.transform-1 {
-  transform: translateY(-70px);
+  transform: translateY(-100%);
 }
 
 .info-area.transform-2 {
-  transform: translateY(-145px);
+  transform: translateY(-200%);
 }
 
+// Responsive adjustments
 @media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-  }
-
-  .cards {
-    position: relative;
-    width: 100%;
-    height: 40dvh;
-    margin-bottom: 20px;
-  }
-
-  .info-area {
-    align-items: center;
-  }
-
-  .title, .subtitle {
-    text-align: center !important;
-  }
-
-  .title {
-    font-size: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .info-area.transform-0 {
-    transform: translateY(0);
+  .player {
+    min-width: 280px;
+    padding: 8px;
   }
   
-  .info-area.transform-1 {
-    transform: translateY(-60px);
-  }
-  
-  .info-area.transform-2 {
-    transform: translateY(-120px);
-  }
-
   .upper-part {
-    height: 60px;
+    min-height: 60px;
   }
-
+  
+  .title {
+    font-size: clamp(20px, 6vw, 40px);
+  }
+  
   .subtitle, .time {
-    margin-left: 0 !important;
+    font-size: clamp(8px, 2vw, 10px);
+  }
+}
+
+@media (max-width: 480px) {
+  .player {
+    min-width: 240px;
+    padding: 6px;
+  }
+  
+  .upper-part {
+    min-height: 50px;
+  }
+  
+  .title {
+    font-size: clamp(18px, 8vw, 32px);
+  }
+  
+  .subtitle, .time {
+    font-size: clamp(7px, 2.5vw, 9px);
   }
 }
