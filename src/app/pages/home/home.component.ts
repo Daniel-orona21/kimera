@@ -290,7 +290,38 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       .to(this.header.nativeElement, { '--before-bg-color': '#ffffff' }, '<')
       .to(this.h1.nativeElement, { color: '#FFFFFF', webkitTextFillColor: '#FFFFFF', duration: 0.3 }, '<');
 
-    // 2. Animación para mostrar el carousel cuando se llega al contenido1
+    // 2. Timeline para el cambio de color del tema
+    const themeColorTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: this.modelSection.nativeElement,
+        scroller: this.cuerpo.nativeElement,
+        start: 'top 80%',
+        end: 'bottom 50%',
+        toggleActions: 'play reverse play reverse',
+        onEnter: () => {
+          // Cambiar a negro suavemente al entrar
+          this.transitionThemeColor('#FFFFFF', '#000000', 300);
+        },
+        onLeave: () => {
+          // Cambiar de vuelta a blanco suavemente al salir
+          setTimeout(() => {
+            this.transitionThemeColor('#000000', '#FFFFFF', 300);
+          }, 200);
+        },
+        onEnterBack: () => {
+          // Cambiar a negro suavemente al volver a entrar
+          this.transitionThemeColor('#FFFFFF', '#000000', 300);
+        },
+        onLeaveBack: () => {
+          // Cambiar de vuelta a blanco suavemente al salir hacia arriba
+          setTimeout(() => {
+            this.transitionThemeColor('#000000', '#FFFFFF', 300);
+          }, 200);
+        }
+      }
+    });
+
+    // 3. Animación para mostrar el carousel cuando se llega al contenido1
     const carouselElement = this.modelSection.nativeElement.querySelector('.contenido1 .sombra');
     if (carouselElement) {
       // Inicialmente oculto
@@ -313,7 +344,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     }
 
-    // 3. Animación para mostrar el centro2 cuando se llega al contenido2
+    // 4. Animación para mostrar el centro2 cuando se llega al contenido2
     const centro2Element = this.modelSection.nativeElement.querySelector('.contenido2 .centro2');
     if (centro2Element) {
       // Inicialmente oculto
@@ -336,7 +367,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     }
 
-    // 4. La animación de escala se mantiene igual
+    // 5. La animación de escala se mantiene igual
     this.model.scale.set(1, 1, 1);
     const scaleTl = gsap.timeline({
       scrollTrigger: {
