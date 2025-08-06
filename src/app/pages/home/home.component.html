@@ -30,13 +30,6 @@
         <div class="seccion">
             <app-images [scroller]="cuerpo" />
         </div>
-        <div class="seccion">
-            <app-model-section 
-              [scrollY]="currentScroll" 
-              [scrollDirection]="scrollDirection"
-              (modelReady)="onModelReady($event)">
-            </app-model-section>
-        </div>
         <div id="barber" class="seccion">
             <app-barber />
         </div>
@@ -44,7 +37,11 @@
             <app-tattoo />
         </div>
         <div id="productos" class="seccion">
-            <app-productos />
+            <app-model-section 
+              [scrollY]="currentScroll" 
+              [scrollDirection]="scrollDirection"
+              (modelReady)="onModelReady($event)">
+            </app-model-section>
         </div>
         <div id="ubicacion" class="seccion">
             <app-ubicacion />
