@@ -395,10 +395,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const contenedores = barberComponent.querySelectorAll('.contenedor');
     
     contenedores.forEach((contenedor, index) => {
+      // Detectar si es móvil para ajustar la animación
+      const isMobile = window.innerWidth <= 768;
+      const yOffset = isMobile ? 20 : 100; // Menos traslado en móvil
+      const imageYOffset = isMobile ? 20 : 50; // Menos traslado en móvil para imágenes
+
       // Inicialmente ocultos con fade in desde abajo
       gsap.set(contenedor, { 
         opacity: 0, 
-        y: 100,
+        y: yOffset, // Usar el offset ajustado según dispositivo
         scale: 0.9
       });
       
@@ -426,7 +431,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         gsap.set(imagen, { 
           scale: 1.2,
           filter: 'blur(2px)',
-          y: 50 // Posición inicial más abajo
+          y: imageYOffset // Posición inicial ajustada según dispositivo
         });
         
         // Animación rápida para el blur (se activa al inicio)
@@ -459,15 +464,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         imageTl.to(imagen, { 
           scale: 1,
-          y: -50, // La imagen sube mientras se hace scroll
+          y: isMobile ? -20 : -50, // Menos parallax en móvil
           ease: 'power2.out'
         });
       }
 
-      // Animación para el componente de texto revelado dentro de cada contenedor
-      const textReveal = contenedor.querySelector('app-text-reveal-simple');
-      if (textReveal) {
-        gsap.set(textReveal, { 
+      // Animación para el texto (h1) dentro de cada contenedor
+      const texto = contenedor.querySelector('h1');
+      if (texto) {
+        gsap.set(texto, { 
           opacity: 0, 
           x: index % 2 === 0 ? -50 : 50 // Alternar dirección según el índice
         });
@@ -482,7 +487,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         });
 
-        textTl.to(textReveal, { 
+        textTl.to(texto, { 
           opacity: 1, 
           x: 0,
           duration: 0.8,

@@ -1,0 +1,14 @@
+<div class="text-reveal-container" #container>
+    <div class="text-wrapper">
+      <p class="text-content">
+        <span 
+          *ngFor="let word of words; let i = index" 
+          class="word"
+          [class.revealed]="wordRevealed[i]"
+        >
+          <span class="word-placeholder">{{ word }}</span>
+          <span class="word-revealed">{{ word }}</span>
+        </span>
+      </p>
+    </div>
+  </div>
