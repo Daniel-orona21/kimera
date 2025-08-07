@@ -5,17 +5,15 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BarberComponent } from "../barber/barber.component";
 import { TattooComponent } from "../tattoo/tattoo.component";
-import { ProductosComponent } from "../productos/productos.component";
 import { UbicacionComponent } from "../ubicacion/ubicacion.component";
 import { ImagesComponent } from "../images/images.component";
 import { ModelSectionComponent } from '../productos/model-section/model-section.component';
-import { HeartViewerComponent } from '../productos/heart-viewer/heart-viewer.component';
 import * as THREE from 'three';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, BarberComponent, TattooComponent, ProductosComponent, UbicacionComponent, ImagesComponent, ModelSectionComponent],
+  imports: [CommonModule, BarberComponent, TattooComponent, UbicacionComponent, ImagesComponent, ModelSectionComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -383,6 +381,115 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       .to(this.model.scale, { x: 5, y: 5, z: 5 })
       .to(this.model.scale, { x: 5, y: 5, z: 5 })
       .to(this.model.scale, { x: 1, y: 1, z: 1 });
+
+    // 6. Animación para el componente barber
+    this.setupBarberAnimations();
+  }
+
+  private setupBarberAnimations(): void {
+    // Buscar el componente barber en el DOM
+    const barberComponent = document.querySelector('app-barber');
+    if (!barberComponent) return;
+
+    // Buscar los contenedores dentro del componente barber
+    const contenedores = barberComponent.querySelectorAll('.contenedor');
+    
+    contenedores.forEach((contenedor, index) => {
+      // Inicialmente ocultos con fade in desde abajo
+      gsap.set(contenedor, { 
+        opacity: 0, 
+        y: 100,
+        scale: 0.9
+      });
+      
+      const barberTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: contenedor,
+          scroller: this.cuerpo.nativeElement,
+          start: 'top bottom',
+          end: 'bottom 0%',
+          toggleActions: 'play reverse play reverse'
+        }
+      });
+
+      barberTl.to(contenedor, { 
+        opacity: 1, 
+        y: 0,
+        scale: 1,
+        duration: 1,
+        ease: 'power2.out'
+      });
+
+      // Animación unificada para las imágenes dentro de cada contenedor
+      const imagen = contenedor.querySelector('.imagen img');
+      if (imagen) {
+        gsap.set(imagen, { 
+          scale: 1.2,
+          filter: 'blur(2px)',
+          y: 50 // Posición inicial más abajo
+        });
+        
+        // Animación rápida para el blur (se activa al inicio)
+        const blurTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: contenedor,
+            scroller: this.cuerpo.nativeElement,
+            start: 'top 90%',
+            end: 'top 70%',
+            toggleActions: 'play none none reverse'
+          }
+        });
+
+        blurTl.to(imagen, { 
+          filter: 'blur(0px)',
+          duration: 0.5,
+          ease: 'power2.out'
+        });
+        
+        // Animación principal para scale y parallax
+        const imageTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: contenedor,
+            scroller: this.cuerpo.nativeElement,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1, // Hace que la animación siga el scroll
+          }
+        });
+
+        imageTl.to(imagen, { 
+          scale: 1,
+          y: -50, // La imagen sube mientras se hace scroll
+          ease: 'power2.out'
+        });
+      }
+
+      // Animación para el componente de texto revelado dentro de cada contenedor
+      const textReveal = contenedor.querySelector('app-text-reveal-simple');
+      if (textReveal) {
+        gsap.set(textReveal, { 
+          opacity: 0, 
+          x: index % 2 === 0 ? -50 : 50 // Alternar dirección según el índice
+        });
+        
+        const textTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: contenedor,
+            scroller: this.cuerpo.nativeElement,
+            start: 'top 75%',
+            end: 'bottom 25%',
+            toggleActions: 'play reverse play reverse'
+          }
+        });
+
+        textTl.to(textReveal, { 
+          opacity: 1, 
+          x: 0,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
+      }
+    });
   }
 
   private setupScroll(): void {
