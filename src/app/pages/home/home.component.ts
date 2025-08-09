@@ -384,6 +384,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // 6. Animación para el componente barber
     this.setupBarberAnimations();
+    
+    // 7. Animación para las cartas de la sección2
+    this.setupCartasAnimations();
   }
 
   private setupBarberAnimations(): void {
@@ -561,5 +564,115 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private rgbToHex(r: number, g: number, b: number): string {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).padStart(6, '0');
+  }
+
+  private setupCartasAnimations(): void {
+    // Buscar el componente barber en el DOM
+    const barberComponent = document.querySelector('app-barber');
+    if (!barberComponent) return;
+
+    // Buscar las cartas dentro de la sección2
+    const cartas = barberComponent.querySelectorAll('.seccion2 .carta');
+    
+    cartas.forEach((carta, index) => {
+      // Inicialmente ocultas con fade in desde abajo
+      gsap.set(carta, { 
+        opacity: 1, 
+        scale: 1, // Más pequeñas inicialmente
+      });
+      
+      const cartaTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: carta,
+          scroller: this.cuerpo.nativeElement,
+          start: 'top 90%', // Empieza más arriba
+          end: 'bottom 20%', // Termina más abajo
+          scrub: .5, // Sigue el ritmo del scroll
+        }
+      });
+
+      cartaTl.to(carta, { 
+        opacity: 1, 
+        scale: 1,
+        ease: 'power2.out'
+      })
+      .to(carta, { 
+        opacity: 1, 
+        filter: 'blur(10px)',
+        scale: 0.6, // Se hace más pequeña al salir
+        ease: 'power2.in'
+      });
+    });
+
+    // Animación para el texto "Comprometidos con tod" - exactamente igual que en images
+    const comprometidosTexts = barberComponent.querySelectorAll('.comprometidos .hola');
+    if (comprometidosTexts.length > 0) {
+      // Timeline para el texto con ScrollTrigger - exactamente igual que en images
+      const textTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: barberComponent.querySelector('.comprometidos'),
+          scroller: this.cuerpo.nativeElement,
+          scrub: 1,
+          start: "top 100%",
+          end: "bottom 0%",
+        }
+      });
+
+      // Condicional para desktop vs mobile
+      if (window.innerWidth > 1024) {
+        // Desktop: y va de 150% a -20%
+        textTimeline.fromTo(
+          comprometidosTexts,
+          { y: '150%' },
+          { y: '-10%', duration: 1 }
+        )
+        .to(comprometidosTexts, { y: '-10%', duration: 1 });
+      } else {
+        // Mobile/tablet: original valores
+        textTimeline.fromTo(
+          comprometidosTexts,
+          { y: '100%' },
+          { y: 0, duration: 1 }
+        )
+        .to(comprometidosTexts, { y: 0, duration: 1 });
+      }
+    }
+    const desde = barberComponent.querySelector('.desde');
+
+    if(desde) {
+      gsap.fromTo(desde,
+        { opacity: 0 },
+        { opacity: 1,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: desde,
+            scroller: this.cuerpo.nativeElement,
+            start: "top: 80%",
+            end: "bottom 40%",
+            toggleActions: "play none none reverse"
+          }
+         }
+      );
+    }
+    
+    const fechaH1 = barberComponent.querySelector('.fecha h1');
+    if (fechaH1) {
+      gsap.fromTo(fechaH1,
+        { x: -500},
+        {
+          x: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: fechaH1,
+            scroller: this.cuerpo.nativeElement,
+            start: "top 70%",
+            end: "bottom 50%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
   }
 }
