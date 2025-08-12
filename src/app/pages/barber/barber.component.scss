@@ -285,7 +285,13 @@
                     align-items: center;
                     justify-content: center;
 
+                    a {
+                        pointer-events: all;
+                        z-index: 999;
+                    }
+
                     .whats {
+                        cursor: pointer;
                         height: 3rem;
                         pointer-events: none;
                         object-fit: contain;
