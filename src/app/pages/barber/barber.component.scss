@@ -192,6 +192,7 @@
         top: 1rem;
         position: absolute;
         margin-bottom: 5rem;
+        // font-family: 'NeueThin'
     }
 
     .barberos {
@@ -308,7 +309,7 @@
             opacity: 1;
         }
     }
-    .barberos:hover .barbero:not(:hover) {
+    .barberos:has(.barbero:hover) .barbero:not(:hover) {
         filter: blur(10px);
     }
 }

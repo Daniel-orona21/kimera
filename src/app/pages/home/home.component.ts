@@ -537,6 +537,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Animación simple: todos los barberos se mueven juntos
     barberosTl.to([yahir, leo, erick], { x: 0, opacity: 1, ease: 'none' });
+
+    // Animación del título de la sección (fade-up sencillo al ritmo del scroll)
+    const titulo = barberComponent.querySelector('.seccion3 h1') as HTMLElement | null;
+    if (titulo) {
+      // Estado inicial
+      gsap.set(titulo, { opacity: 0, y: 40 });
+
+      // Un único scrub sencillo, sin efectos extra
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: titulo,
+          scroller: this.cuerpo.nativeElement,
+          start: 'top 95%',
+          end: 'top 75%',
+          scrub: 1
+        }
+      }).to(titulo, { opacity: 1, y: 0, ease: 'none' });
+    }
   }
 
   private enableBarberHover(): void {
