@@ -9,7 +9,4 @@ import { TextRevealSimpleComponent } from '../../shared/components/text-reveal/t
   styleUrl: './barber.component.scss'
 })
 export class BarberComponent {
-
-  
-
 }

@@ -170,6 +170,147 @@
             }
         }
     }
+
+    //seccion3 
+
+}
+
+.seccion3 {
+    // background-color: red;
+    max-width: 1800px;
+    // z-index: 9999;
+    width: 100%;
+    display: flex;
+    min-height: 80vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 3rem;
+
+    h1 {
+        top: 1rem;
+        position: absolute;
+        margin-bottom: 5rem;
+    }
+
+    .barberos {
+        // background-color: green;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-around;
+        gap: 2rem;
+        align-items: center;
+        margin: 0 auto;
+
+        .barbero {
+            overflow: hidden;
+            height: 24rem;
+            display: flex;
+            border-radius: 2rem;
+            /* Solo transicionar lo que cambia en hover para no interferir con GSAP */
+            transition: height .3s ease, flex .3s ease, filter .2s linear;
+            flex: 1;
+            filter: blur(0px);
+            position: relative;
+            justify-content: flex-end;
+            align-items: flex-end;
+            /* Opacidad y transform los controla GSAP durante el scroll */
+            /* no definir opacity/transform iniciales aquí */
+
+            &.hover-enabled {
+
+                &:hover {
+                    flex: 1.5 !important;
+                    height: 28rem;
+
+                    .foot {
+                        .contenedor p {
+                            transform: translateY(0);
+                            pointer-events: all;
+                            /* No transition-delay for text */
+                        }
+                        .contenedorWhats .whats {
+                            transform: translateY(0);
+                            pointer-events: all;
+                            transition-delay: 0.2s;
+                        }
+                    }
+                }
+            }
+
+            .foot {
+                transition: all .6s;
+                display: flex;
+                width: 100%;
+                z-index: 4;
+                height: 100px;
+                padding: 2rem;
+                position: relative;
+                justify-content: space-between;
+                align-items: center;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(to top, rgba(0,0,0,0.74), transparent);
+                    opacity: 0;
+                    transition: opacity 0.6s ease;
+                    z-index: -1; /* para que no tape el contenido */
+                }
+                
+                .contenedor {
+                    position: relative;
+                    width: min-content;
+                    height: min-content;
+                    overflow: hidden;
+
+                    p {
+                        transform: translateY(2.5rem);
+                        pointer-events: none;
+                        font-size: 2rem;
+                        color: white;
+                        transition: transform 0.6s ease;
+                    }
+                }
+
+                .contenedorWhats {
+                    overflow: hidden;
+                    position: relative;
+                    height: min-content;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    .whats {
+                        height: 3rem;
+                        pointer-events: none;
+                        object-fit: contain;
+                        transform: translateY(3.5rem);
+                        transition: transform 0.6s ease;
+                    }
+                }
+            }
+
+
+            .fotografia {
+                z-index: 3;
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                object-fit: cover;
+                max-height: 100%;
+            }
+        }
+        .barbero:hover .foot::before {
+            opacity: 1;
+        }
+    }
+    .barberos:hover .barbero:not(:hover) {
+        filter: blur(10px);
+    }
 }
 
 @media (max-width: 768px) {
@@ -305,4 +446,46 @@
         }
     }
 
+    .seccion3 {
+
+        padding: 1rem;
+
+        h1 {
+            font-size: 1.5rem !important;
+            text-align: center;
+            width: 100%;
+        }
+        .barberos {
+            margin-top: -3rem !important;
+            align-self: flex-end !important;
+            gap: 1rem !important;
+            flex-direction: column;
+            height: 100% !important;
+            width: 70%;
+        }
+    
+        .barbero {
+            transform: translateY(3rem);
+            width: 90%;
+            min-height: 17vh !important;
+
+            &.hover-enabled {
+                &:hover {
+                    // min-height: 20vh !important;
+                }
+            }
+
+            .foot {
+                padding: 1rem !important;
+
+                p {
+                    font-size: 2rem !important;
+                }
+
+                .whats {
+                    height: 2.5rem !important;
+                }
+            }
+        }
+    }
 }

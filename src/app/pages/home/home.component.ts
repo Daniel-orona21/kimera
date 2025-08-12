@@ -475,19 +475,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // Animación para el texto (h1) dentro de cada contenedor
       const texto = contenedor.querySelector('h1');
       if (texto) {
-        gsap.set(texto, { 
+        gsap.set(contenedor, { 
           opacity: 0, 
           x: index % 2 === 0 ? -50 : 50 // Alternar dirección según el índice
         });
         
         const textTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: contenedor,
-            scroller: this.cuerpo.nativeElement,
-            start: 'top 75%',
-            end: 'bottom 25%',
-            toggleActions: 'play reverse play reverse'
-          }
+          trigger: contenedor,
+          scroller: this.cuerpo.nativeElement,
+          start: 'top 75%',
+          end: 'bottom 25%',
+          toggleActions: 'play reverse play reverse'
         });
 
         textTl.to(texto, { 
@@ -497,6 +495,58 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           ease: 'power2.out'
         });
       }
+    });
+
+    // Animaciones para los barberos individuales
+    this.setupBarberosIndividuales(barberComponent);
+  }
+
+  private setupBarberosIndividuales(barberComponent: Element): void {
+    // Buscar los barberos individuales
+    const yahir = barberComponent.querySelector('.barbero.yahir');
+    const leo = barberComponent.querySelector('.barbero.leo');
+    const erick = barberComponent.querySelector('.barbero.erick');
+
+    if (!yahir || !leo || !erick) return;
+
+    // Configurar posiciones iniciales
+    gsap.set(yahir, { x: -100, opacity: 0 });
+
+    gsap.set(leo, { x: 0, opacity: 0 });
+
+    gsap.set(erick, { x: 100, opacity: 0 });
+
+    // Timeline simple para la animación de entrada
+    const barberosTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: barberComponent.querySelector('.seccion3'),
+        scroller: this.cuerpo.nativeElement,
+        start: 'top 80%',
+        end: 'top 50%',
+        scrub: 1
+      }
+    });
+
+    // Habilitar hover cuando termine la animación
+    ScrollTrigger.create({
+      trigger: barberComponent.querySelector('.seccion3'),
+      scroller: this.cuerpo.nativeElement,
+      start: 'top 50%',
+      onEnter: () => this.enableBarberHover()
+    });
+
+    // Animación simple: todos los barberos se mueven juntos
+    barberosTl.to([yahir, leo, erick], { x: 0, opacity: 1, ease: 'none' });
+  }
+
+  private enableBarberHover(): void {
+    // Solo habilitar el hover una vez
+    if (document.querySelector('.barbero.hover-enabled')) return;
+    
+    // Habilitar el hover agregando la clase a todos los barberos
+    const barberos = document.querySelectorAll('.barbero');
+    barberos.forEach(barbero => {
+      barbero.classList.add('hover-enabled');
     });
   }
 
