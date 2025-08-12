@@ -1,0 +1,56 @@
+.cuerpo {
+  min-height: 80dvh;
+}
+
+ @-webkit-keyframes animate-svg-stroke-1 {
+    0% {
+      stroke-dashoffset: 2079.856689453125px;
+      stroke-dasharray: 2079.856689453125px;
+    }
+  
+    100% {
+      stroke-dashoffset: 0;
+      stroke-dasharray: 2079.856689453125px;
+    }
+  }
+  
+  @keyframes animate-svg-stroke-1 {
+    0% {
+      stroke-dashoffset: 2079.856689453125px;
+      stroke-dasharray: 2079.856689453125px;
+    }
+  
+    100% {
+      stroke-dashoffset: 0;
+      stroke-dasharray: 2079.856689453125px;
+    }
+  }
+  
+  @-webkit-keyframes animate-svg-fill-1 {
+    0% {
+      fill: transparent;
+    }
+  
+    100% {
+      fill: rgb(0, 0, 0);
+    }
+  }
+  
+  @keyframes animate-svg-fill-1 {
+    0% {
+      fill: transparent;
+    }
+  
+    100% {
+      fill: rgb(0, 0, 0);
+    }
+  }
+  
+  .svg-elem-1 {
+    /* Animaciones CSS deshabilitadas - ahora controladas por GSAP */
+    /* -webkit-animation: animate-svg-stroke-1 2s cubic-bezier(0.47, 0, 0.745, 0.715) 0s both,
+                         animate-svg-fill-1 0.7s cubic-bezier(0.47, 0, 0.745, 0.715) 0.5s both;
+            animation: animate-svg-stroke-1 2s cubic-bezier(0.47, 0, 0.745, 0.715) 0s both,
+                 animate-svg-fill-1 0.7s cubic-bezier(0.47, 0, 0.745, 0.715) 0.5s both; */
+  }
+  
