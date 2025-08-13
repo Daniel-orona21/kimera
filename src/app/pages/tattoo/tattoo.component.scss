@@ -1,5 +1,53 @@
 .cuerpo {
-  min-height: 80dvh;
+  min-height: 100dvh;
+  width: 100vw;
+  display: flex;
+  padding-top: 2rem;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.seccion1 {
+  // background-color: red;
+  display: flex;
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  height: 150dvh;
+
+  img {
+    // background-color: green;
+    // opacity: .3;
+    width: 100vw;
+    height: 100dvh;
+    object-fit: cover;
+    position: sticky;
+    top: 0;
+  }
+}
+
+.ventana {
+  // display: none;
+  position: absolute;
+  width: 100vw;
+  height: 180dvh;
+  background: rgb(255, 255, 255); /* color del cuadro */
+  
+  /* Usar CSS custom properties para que GSAP pueda controlar el tamaño */
+  --circle-size: 30dvh;
+  
+  /* recortar un círculo al centro usando la variable CSS */
+  -webkit-mask: radial-gradient(circle var(--circle-size) at center, transparent 0, transparent var(--circle-size), black calc(var(--circle-size) + 1px));
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: cover;
+
+  /* para navegadores que soporten mask estándar */
+  mask: radial-gradient(circle var(--circle-size) at center, transparent 0, transparent var(--circle-size), black calc(var(--circle-size) + 1px));
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: cover;
 }
 
  @-webkit-keyframes animate-svg-stroke-1 {
