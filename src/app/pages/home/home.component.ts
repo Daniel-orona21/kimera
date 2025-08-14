@@ -118,10 +118,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   private initializeLenis() {
     this.lenis = new Lenis({
       wrapper: this.cuerpo.nativeElement,
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      infinite: false
+      duration: 0.8,
+      easing: (t) => t,
+      smoothWheel: false,
+      infinite: false,
+      lerp: 0.1
     });
     
     this.lenis.stop();
