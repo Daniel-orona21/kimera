@@ -1,0 +1,135 @@
+/* Three column layout */
+
+.contenido {
+    position: relative !important;
+    width: 100%;
+    color: white;
+    display: flex;
+}
+
+.text-container {
+    position: sticky;
+    top: 0;
+    width: 80% !important;
+    height: 100vh;
+    width: min-content;
+    z-index: 2;
+    pointer-events: none; 
+    display: flex;
+}
+
+.hello__div {
+    pointer-events: auto; 
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 auto;
+    padding-left: 3rem;
+
+    .contenedorTexto {
+        overflow: hidden;
+
+        p {
+           font-style: normal;
+           flex-wrap: wrap;
+           font-size: 4.5vw;
+           text-align: left;
+           color: rgb(0, 0, 0);
+           margin: 0 !important; 
+           opacity: 1;
+           z-index: 1 !important;
+           font-family: "NeueNormal", sans-serif;
+           text-transform: uppercase;
+        }
+
+        .bold {
+            font-family: "NeueThin", sans-serif !important;
+        }
+    }
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem; /* Espacio reducido entre columnas */
+    width: 100%;
+    max-width: 80em;
+    margin: 0 auto;
+    position: relative;
+    overflow-y: hidden; /* Ocultar overflow para las animaciones */
+    min-height: 200vh; /* Asegurar que hay suficiente contenido para scroll */
+}
+
+/* Inside one column, lay out all items in column direction */
+.column {
+    --column-offset: 5vh; /* Reducido de 10vh a 5vh */
+    display: flex;
+    flex-direction: column;
+    padding: var(--column-offset) 0;
+    margin: 1em; /* Asegurar que no hay márgenes adicionales */
+}
+
+/* Optimización para fluidez - igual que el texto kimera */
+.column-reverse {
+    will-change: transform;
+    transform-origin: center center;
+}
+
+/* Limit site of the images */
+.column__item-imgwrap img {
+    border-radius: 1em;
+    width: 100%;
+    height: auto;
+    aspect-ratio: .7;
+    object-fit: cover;
+}
+
+.column__item-caption {
+    text-align: center;
+    margin: 0rem 0; /* Añadido margen reducido */
+}
+
+/* Reducir espacio entre elementos de la columna */
+.column__item {
+    margin-bottom: 0rem; /* Espacio reducido entre imágenes */
+}
+
+/* general styles */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overscroll-behavior: none;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+        "Segoe UI Symbol";
+}
+
+@media (max-width: 768px) {
+    .text-container {
+        width: 100%;
+        height: 70vh !important;
+        
+        .hello__div {
+            padding-left: 0;
+            padding-top: 6.5rem;
+
+        .contenedorTexto {
+            width: 100%;
+    
+            p {
+               font-size: 10.5vw !important;
+               text-align: center;
+            }
+           }
+        }
+    }
+}

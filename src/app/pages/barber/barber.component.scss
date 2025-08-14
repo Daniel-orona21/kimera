@@ -336,11 +336,13 @@
 
     .seccion2 {
         flex-direction: column;
-        justify-content: flex-end !important;
+        align-items: center !important;
     }
 
     .todos {
+        margin: 0 auto;
         position: sticky;
+        align-items: center;
         top: 15dvh !important;
         // background-color: red !important;
         height: 85dvh !important;
@@ -389,7 +391,7 @@
             justify-content: center !important;
             align-items: center !important;
             padding: 0;
-            margin-left: -1.9rem !important;
+            margin-left: -.3rem !important;
             margin-top: -1rem;
 
             .desde {
@@ -422,7 +424,7 @@
     }
     .cartas {
         // background-color: blue;
-        width: 100% !important;
+        width: 90% !important;
         margin-top: -58vh !important;
         position: sticky;
         gap: 10px;
@@ -430,7 +432,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        align-self: flex-end;
         padding-bottom: 4rem !important;
 
         .carta {
