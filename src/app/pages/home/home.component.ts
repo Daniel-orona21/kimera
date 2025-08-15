@@ -20,7 +20,7 @@ import { ScrollReverseComponent } from "../scroll-reverse/scroll-reverse.compone
 })
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   animationState: 'idle' | 'loading' | 'loaded' = 'idle';
-  playAnimation = false;
+  playAnimation = true;
   currentScroll: number = 0;
   scrollDirection: number = 1; // 1 for down, -1 for up
   private previousScroll: number = 0;
@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.updateThemeColor('#19322c');  // Solo este verde inicial se mantiene
-    // Registrar ScrollTrigger una sola vez
+    // Registrar ScrollTrigger de forma controlada
     gsap.registerPlugin(ScrollTrigger);
     
     if (this.playAnimation) {
@@ -103,20 +103,28 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initializeLenis();
     this.renderer.setStyle(this.inicio.nativeElement, 'background-color', '#19322c');
 
-    if (!this.playAnimation) {
+    if (this.playAnimation) {
+      // MODO ANIMACIÓN INICIAL - EL SCROLL SE CONFIGURA DESPUÉS DE LA ANIMACIÓN
+      console.log('🎬 MODO ANIMACIÓN INICIAL ACTIVADO');
+      // NO configuramos scroll aquí, se hará en onAnimationEnd()
+    } else {
+      // MODO SIN ANIMACIÓN INICIAL - CONFIGURAR SCROLL INMEDIATAMENTE
+      console.log('⚡ MODO SIN ANIMACIÓN - CONFIGURANDO SCROLL INMEDIATAMENTE');
+      setTimeout(() => {
+        this.setupScroll();
+        this.setupModelSectionTrigger();
+        console.log('🚀 ANIMACIONES CONFIGURADAS INMEDIATAMENTE');
+      }, 50);
+      
       this.transitionThemeColor('#19322c', '#000000', 500);
       this.renderer.setStyle(this.inicio.nativeElement, 'background-color', 'black');
       this.renderer.addClass(this.subtitulo.nativeElement, 'visible');
       this.renderer.addClass(this.scrollDownContainer.nativeElement, 'visible');
-      
-      document.fonts.ready.then(() => {
-        this.setupScroll();
-        this.setupModelSectionTrigger();
-      });
     }
   }
 
   private initializeLenis() {
+    // CONFIGURACIÓN ORIGINAL DE LENIS - SIN MODIFICAR
     this.lenis = new Lenis({
       wrapper: this.cuerpo.nativeElement,
       duration: 0.8,
@@ -126,7 +134,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       lerp: 0.1
     });
     
-    this.lenis.stop();
+    if (this.playAnimation) {
+      // MANTENER LENIS PAUSADO DURANTE LA ANIMACIÓN INICIAL
+      this.lenis.stop();
+      console.log('🔧 LENIS INICIALIZADO - PAUSADO PARA ANIMACIÓN INICIAL');
+    } else {
+      // INICIAR LENIS INMEDIATAMENTE
+      this.lenis.start();
+      console.log('🔧 LENIS INICIALIZADO Y INICIADO INMEDIATAMENTE');
+    }
 
     const raf = (time: number) => {
       this.lenis?.raf(time);
@@ -149,7 +165,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private setupScrollTriggerProxy() {
-    // Configurar ScrollTrigger para trabajar perfectamente con Lenis
+    // CONFIGURACIÓN SIMPLIFICADA - COMO CUANDO playAnimation = false
     ScrollTrigger.scrollerProxy(this.cuerpo.nativeElement, {
       scrollTop: (value?: number) => {
         if (value !== undefined) {
@@ -158,22 +174,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         return this.lenis?.scroll || 0;
       },
-      getBoundingClientRect: () => {
-        return {
-          top: 0,
-          left: 0,
-          width: window.innerWidth,
-          height: window.innerHeight
-        };
-      },
+      getBoundingClientRect: () => this.cuerpo.nativeElement.getBoundingClientRect(),
       pinType: this.cuerpo.nativeElement.style.transform ? "transform" : "fixed"
     });
 
-    // Ya no es necesario, se maneja arriba
-    // this.lenis?.on('scroll', ScrollTrigger.update);
+    // Configuración adicional para asegurar que funcione
+    this.lenis?.on('scroll', ScrollTrigger.update);
     
-    // Refrescar ScrollTrigger después de configuración
-    ScrollTrigger.addEventListener("refresh", () => this.lenis?.resize());
+    console.log('✅ ScrollTrigger Proxy configurado de forma simplificada');
   }
 
   private setupGsapAnimation(): void {
@@ -252,17 +260,68 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.transitionThemeColor('#19322c', '#000000', 1000);
       subtituloEl.classList.add('visible');
       setTimeout(() => {
+        // CONFIGURAR SCROLL COMPLETO AL FINAL DE LA ANIMACIÓN
         this.setupScroll();
-        scroll.classList.add('visible')
+        this.setupModelSectionTrigger();
+        scroll.classList.add('visible');
+        this.animationState = 'loaded';
+        
+        // ASEGURAR QUE LENIS ESTÁ ACTIVO Y FUNCIONANDO
+        if (this.lenis) {
+          this.lenis.start();
+          console.log('🔓 LENIS ACTIVADO AL FINAL DE ANIMACIÓN');
+        }
+        
+        // VERIFICAR QUE TODO ESTÁ CONFIGURADO
+        console.log('🔍 VERIFICACIÓN FINAL:', {
+          lenisActive: !this.lenis?.isLocked,
+          scrollClass: this.cuerpo.nativeElement.classList.contains('scroll'),
+          animationState: this.animationState
+        });
+        
+        console.log('✅ SCROLL COMPLETAMENTE HABILITADO - ANIMACIÓN TERMINADA - LINKS FUNCIONAN');
       }, 500);
     }, 2000);
   }
 
   scrollTo(section: string) {
-    this.lenis?.scrollTo(section, {
-      offset: 0,
-      duration: 1.5,
-    });
+    console.log(`🔗 Navegación solicitada a: ${section}, animationState: ${this.animationState}`);
+    
+    // VERIFICACIÓN SIMPLE DEL ESTADO
+    if (!this.lenis) {
+      console.log('❌ ERROR: LENIS NO DISPONIBLE');
+      return;
+    }
+    
+    // ASEGURAR QUE LENIS ESTÁ ACTIVO SIEMPRE
+    if (this.lenis.isLocked) {
+      this.lenis.start();
+      console.log('🔓 LENIS ACTIVADO');
+    }
+    
+    // ASEGURAR QUE EL SCROLL ESTÁ CONFIGURADO SIEMPRE
+    if (!this.cuerpo.nativeElement.classList.contains('scroll')) {
+      this.renderer.addClass(this.cuerpo.nativeElement, 'scroll');
+      this.setupScrollTriggerProxy();
+      console.log('⚡ SCROLL CONFIGURADO PARA NAVEGACIÓN');
+    }
+    
+    // NAVEGACIÓN DIRECTA - SIEMPRE FUNCIONA
+    try {
+      this.lenis.scrollTo(section, {
+        offset: 0,
+        duration: 1.5,
+      });
+      console.log(`✅ NAVEGANDO A: ${section}`);
+    } catch (error) {
+      console.log('❌ ERROR EN NAVEGACIÓN:', error);
+      // Fallback: scroll nativo
+      const element = document.querySelector(section);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        console.log(`✅ NAVEGANDO A: ${section} CON SCROLL NATIVO`);
+      }
+    }
   }
 
   onModelReady(model: THREE.Group) {
@@ -638,43 +697,149 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  private setupTattooImageAnimation(): void {
-    console.log('🔍 Configurando animación del tattoo...');
-    // Pequeño delay para asegurar que el componente esté renderizado
-    setTimeout(() => {
-      // Buscar el componente tattoo en el DOM
-      const tattooComponent = document.querySelector('app-tattoo');
-      console.log('📱 Componente tattoo encontrado:', !!tattooComponent);
-      if (!tattooComponent) return;
+  // FUNCIÓN DESHABILITADA - El componente tattoo maneja sus propias animaciones
+  // private setupTattooImageAnimation(): void {
+  //   console.log('🔍 Configurando animación del tattoo...');
+  //   // Pequeño delay para asegurar que el componente esté renderizado
+  //   setTimeout(() => {
+  //     // Buscar el componente tattoo en el DOM
+  //     const tattooComponent = document.querySelector('app-tattoo');
+  //     console.log('📱 Componente tattoo encontrado:', !!tattooComponent);
+  //     if (!tattooComponent) return;
 
-      // Buscar la imagen dentro del contenedorImg
-      const tattooImage = tattooComponent.querySelector('.contenedorImg img');
-      console.log('🖼️ Imagen del tattoo encontrada:', !!tattooImage);
-      if (!tattooImage) return;
+  //     // Buscar la imagen dentro del contenedorImg
+  //     const tattooImage = tattooComponent.querySelector('.contenedorImg img');
+  //     console.log('🖼️ Imagen del tattoo encontrada:', !!tattooImage);
+  //     if (!tattooImage) return;
 
-      console.log('✅ Configurando ScrollTrigger para la imagen del tattoo');
-      // Animación de la imagen basada en scroll - movimiento más sutil
-      gsap.to(tattooImage, {
-        y: -150, // Movimiento más sutil para evitar recortes
-        ease: 'none',
-        scrollTrigger: {
-          trigger: tattooComponent,
-          scroller: this.cuerpo.nativeElement,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1, // Sincroniza con el scroll
-        }
-      });
-    }, 100); // 100ms de delay
-  }
+  //     console.log('✅ Configurando ScrollTrigger para la imagen del tattoo');
+  //     // Animación de la imagen basada en scroll - movimiento más sutil
+  //     gsap.to(tattooImage, {
+  //       y: -150, // Movimiento más sutil para evitar recortes
+  //       ease: 'none',
+  //       scrollTrigger: {
+  //         trigger: tattooComponent,
+  //         scroller: this.cuerpo.nativeElement,
+  //         start: 'top bottom',
+  //         end: 'bottom top',
+  //         scrub: 1, // Sincroniza con el scroll
+  //       }
+  //     });
+  //   }, 100); // 100ms de delay
+  // }
 
   private setupScroll(): void {
     this.renderer.addClass(this.cuerpo.nativeElement, 'scroll');
+    
+    // ACTIVAR LENIS SI NO ESTÁ FUNCIONANDO
+    if (this.lenis) {
+      if (this.lenis.isLocked || !this.lenis.raf) {
+        this.lenis.start();
+        console.log('🔓 LENIS ACTIVADO');
+      } else {
+        console.log('✅ LENIS YA ESTÁ FUNCIONANDO');
+      }
+    } else {
+      console.log('❌ ERROR: LENIS NO ESTÁ INICIALIZADO');
+    }
+    
+    // CONFIGURAR ScrollTriggerProxy para que funcione con Lenis
     this.setupScrollTriggerProxy();
-    // Ya no llamamos a setupModelSectionTrigger() aquí
-    this.lenis?.start();
-    this.setupGsapAnimation();
-    this.setupTattooImageAnimation(); // Agregar aquí para que se ejecute siempre
+    
+    // CONFIGURAR las animaciones esenciales
+    this.setupEssentialAnimations();
+    
+    console.log('🚀 SCROLL CONFIGURADO - LENIS + ANIMACIONES ESENCIALES');
+    
+    // DEBUG: Verificar estado final
+    this.debugScrollState();
+  }
+
+  private debugScrollState(): void {
+    console.log('🔍 DEBUG ESTADO DEL SCROLL:', {
+      cuerpoClass: this.cuerpo.nativeElement.classList.contains('scroll'),
+      lenisExists: !!this.lenis,
+      lenisLocked: this.lenis?.isLocked,
+      lenisRaf: !!this.lenis?.raf,
+      scrollTriggerRegistered: !!ScrollTrigger,
+      bodyHeight: document.body.scrollHeight,
+      cuerpoHeight: this.cuerpo.nativeElement.scrollHeight
+    });
+  }
+
+  private setupEssentialAnimations(): void {
+    console.log('🎬 Configurando animaciones esenciales...');
+    
+    // 1. ANIMACIÓN DEL TEXTO KIMERA (H1)
+    this.h1InitialRect = this.h1.nativeElement.getBoundingClientRect();
+    this.h1TargetRect = this.h1Placeholder.nativeElement.getBoundingClientRect();
+
+    if (!this.h1InitialRect || !this.h1TargetRect) {
+      console.log('❌ No se pudieron obtener las dimensiones del H1');
+      return;
+    }
+
+    this.renderer.setStyle(this.h1Wrapper.nativeElement, 'height', `${this.h1InitialRect.height}px`);
+    this.renderer.addClass(this.h1.nativeElement, 'moving');
+    this.renderer.setStyle(this.h1.nativeElement, 'top', `${this.h1InitialRect.top}px`);
+    this.renderer.setStyle(this.h1.nativeElement, 'left', `${this.h1InitialRect.left}px`);
+
+    const targetScale = this.h1TargetRect.width / this.h1InitialRect.width;
+    const initialCenterX = this.h1InitialRect.left + this.h1InitialRect.width / 2;
+    const initialCenterY = this.h1InitialRect.top + this.h1InitialRect.height / 2;
+    const targetCenterX = this.h1TargetRect.left + this.h1TargetRect.width / 2;
+    const targetCenterY = this.h1TargetRect.top + this.h1TargetRect.height / 2;
+    const deltaX = targetCenterX - initialCenterX;
+    const deltaY = targetCenterY - initialCenterY;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: this.inicio.nativeElement,
+        scroller: this.cuerpo.nativeElement,
+        start: 'top top',
+        end: '50% top',
+        scrub: 0.5,
+      },
+    });
+
+    tl.fromTo(this.h1.nativeElement, {
+      x: 0,
+      y: 0,
+      scale: 1,
+      webkitTextFillColor: 'white',
+      filter: 'drop-shadow(0.05em 0.025em 0.04em rgba(0, 0, 0, 0.8))',
+    }, {
+      x: deltaX,
+      y: deltaY,
+      scale: targetScale,
+      webkitTextFillColor: 'black',
+      filter: 'drop-shadow(0 0 0 rgba(0, 0, 0, 0))',
+      ease: 'none',
+      onStart: () => {
+        this.renderer.setStyle(this.h1.nativeElement, 'transform-origin', 'center center');
+      }
+    })
+    .fromTo(this.header.nativeElement, {
+      scale: 1.5,
+      ease: 'none'
+    }, {
+      scale: 1,
+      ease: 'none'
+    }, '<')
+    .to(this.header.nativeElement, { opacity: 1 }, '<')
+    .to(this.subtitulo.nativeElement, { opacity: 0 }, '<')
+    .to(this.scrollDownContainer.nativeElement, { opacity: 0 }, '<');
+
+    // 2. ANIMACIÓN DEL HEADER (cambio de colores)
+    ScrollTrigger.create({
+      trigger: this.header.nativeElement,
+      scroller: this.cuerpo.nativeElement,
+      start: 'bottom top',
+      onEnter: () => this.transitionThemeColor('#000000', '#FFFFFF', 300),
+      onLeaveBack: () => this.transitionThemeColor('#FFFFFF', '#000000', 300)
+    });
+
+    console.log('✅ Animaciones esenciales configuradas');
   }
 
   private updateThemeColor(color: string): void {
@@ -845,3 +1010,4 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 }
+
