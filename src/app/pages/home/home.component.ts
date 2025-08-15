@@ -20,7 +20,7 @@ import { ScrollReverseComponent } from "../scroll-reverse/scroll-reverse.compone
 })
 export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   animationState: 'idle' | 'loading' | 'loaded' = 'idle';
-  playAnimation = true;
+  playAnimation = false;
   currentScroll: number = 0;
   scrollDirection: number = 1; // 1 for down, -1 for up
   private previousScroll: number = 0;
