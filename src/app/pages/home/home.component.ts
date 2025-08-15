@@ -10,11 +10,12 @@ import { ImagesComponent } from "../images/images.component";
 import { ModelSectionComponent } from '../productos/model-section/model-section.component';
 import * as THREE from 'three';
 import { ScrollReverseComponent } from "../scroll-reverse/scroll-reverse.component";
+import { FooterComponent } from "../../shared/components/footer/footer.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, BarberComponent, TattooComponent, UbicacionComponent, ImagesComponent, ModelSectionComponent, ScrollReverseComponent],
+  imports: [CommonModule, BarberComponent, TattooComponent, UbicacionComponent, ImagesComponent, ModelSectionComponent, ScrollReverseComponent, FooterComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
