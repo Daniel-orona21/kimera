@@ -273,15 +273,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   private setupModelSectionTrigger(): void {
     if (!this.model) return; // No hacer nada si el modelo no está listo
 
+    // Buscar la sección de tattoo en el DOM
+    const tattooSection = document.querySelector('#tattoo');
+    if (!tattooSection) return;
+
     // Timeline unificado para el cambio de color y tema
     const modelSectionTl = gsap.timeline({
       scrollTrigger: {
-        trigger: this.modelSection.nativeElement,
+        trigger: tattooSection,
         scroller: this.cuerpo.nativeElement,
-        start: 'top 80%',
-        end: 'bottom 50%',
+        start: 'top 90%',
+        end: () => `70%+=${this.modelSection.nativeElement.offsetHeight}`, // Dura hasta el final de la sección de model
         onEnter: () => {
-          // Cambiar a negro suavemente al entrar
+          // Cambiar a negro suavemente al entrar a la sección de tattoo
           this.transitionThemeColor('#FFFFFF', '#000000', 300);
           // Cambiar color de fondo del cuerpo
           gsap.to('.cuerpo', { backgroundColor: '#000000', duration: 0.3 });
@@ -292,7 +296,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           gsap.to(this.h1.nativeElement, { color: '#FFFFFF', webkitTextFillColor: '#FFFFFF', duration: 0.3 });
         },
         onLeave: () => {
-          // Cambiar de vuelta a blanco suavemente al salir
+          // Cambiar de vuelta a blanco suavemente al salir completamente de la sección de model
           this.transitionThemeColor('#000000', '#FFFFFF', 300);
           // Restaurar color de fondo del cuerpo
           gsap.to('.cuerpo', { backgroundColor: '#FFFFFF', duration: 0.3 });
@@ -303,7 +307,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           gsap.to(this.h1.nativeElement, { color: '#000000', webkitTextFillColor: '#000000', duration: 0.3 });
         },
         onEnterBack: () => {
-          // Cambiar a negro suavemente al volver a entrar
+          // Cambiar a negro suavemente al volver a entrar a la sección de tattoo
           this.transitionThemeColor('#FFFFFF', '#000000', 300);
           // Cambiar color de fondo del cuerpo
           gsap.to('.cuerpo', { backgroundColor: '#000000', duration: 0.3 });
@@ -314,7 +318,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           gsap.to(this.h1.nativeElement, { color: '#FFFFFF', webkitTextFillColor: '#FFFFFF', duration: 0.3 });
         },
         onLeaveBack: () => {
-          // Cambiar de vuelta a blanco suavemente al salir hacia arriba
+          // Cambiar de vuelta a blanco suavemente al salir hacia arriba de la sección de tattoo
           this.transitionThemeColor('#000000', '#FFFFFF', 300);
           // Restaurar color de fondo del cuerpo
           gsap.to('.cuerpo', { backgroundColor: '#FFFFFF', duration: 0.3 });

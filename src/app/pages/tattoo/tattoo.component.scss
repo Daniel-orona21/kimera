@@ -4,9 +4,11 @@
   width: 100vw !important;
   align-items: center;
   gap: 1rem;
+  background-color: transparent !important;
 
   svg {
     margin-bottom: 5rem;
+    background-color: transparent !important;
   }
 }
 
@@ -63,6 +65,7 @@
   font-size: 1.5rem;
   margin-right: 3rem;
   flex-shrink: 0;
+  color: #ffffff;
 }
 
 @keyframes moveLeft {
@@ -104,7 +107,7 @@
     }
   
     100% {
-      fill: rgb(0, 0, 0);
+      fill: rgb(255, 255, 255);
     }
   }
   
@@ -114,7 +117,7 @@
     }
   
     100% {
-      fill: rgb(0, 0, 0);
+      fill: rgb(255, 255, 255);
     }
   }
   
@@ -131,7 +134,7 @@
     width: 100%;
     height: 80vh;
     margin-top: 2rem;
-    background-color: #000000;
+    background-color: transparent;
     border-radius: 8px;
     overflow: hidden;
   }

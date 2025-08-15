@@ -92,7 +92,7 @@ export class TattooComponent implements AfterViewInit {
 
     // Animación del relleno
     fillTl.to(path, {
-      fill: 'rgb(0, 0, 0)',
+      fill: 'rgb(255, 255, 255)',
       duration: 0.5,
       ease: 'none'
     });

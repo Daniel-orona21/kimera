@@ -474,7 +474,7 @@ class App {
   createRenderer() {
     this.renderer = new Renderer({ alpha: true });
     this.gl = this.renderer.gl;
-    this.gl.clearColor(255, 255, 255, 1); // Transparent background for the canvas
+    this.gl.clearColor(0, 0, 0, 0); // Transparent background for the canvas
     this.container.appendChild(this.renderer.gl.canvas as HTMLCanvasElement);
   }
 
@@ -593,7 +593,7 @@ class App {
   }
 
   onWheel() {
-    this.scroll.target += 2;
+    this.scroll.target += 0.5; // Reducida la velocidad del scroll del mouse
     this.onCheckDebounce();
   }
 
