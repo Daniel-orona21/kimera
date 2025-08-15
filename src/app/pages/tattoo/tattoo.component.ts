@@ -15,28 +15,28 @@ export class TattooComponent implements AfterViewInit {
   // Datos para la galería circular
   galleryItems = [
     {
-      image: 'https://picsum.photos/seed/1/800/600?grayscale',
-      text: 'Tattoo 1',
+      image: 'images/tattoos/t1.png',
+      text: 'Puntillismo',
     },
     {
-      image: 'https://picsum.photos/seed/2/800/600?grayscale',
-      text: 'Tattoo 2',
+      image: 'images/tattoos/t2.png',
+      text: 'Linea Fina',
     },
     {
-      image: 'https://picsum.photos/seed/3/800/600?grayscale',
-      text: 'Tattoo 3',
+      image: 'images/tattoos/t3.png',
+      text: 'Realismo',
     },
     {
-      image: 'https://picsum.photos/seed/4/800/600?grayscale',
-      text: 'Tattoo 4',
+      image: 'images/tattoos/t4.png',
+      text: 'Colores',
     },
     {
-      image: 'https://picsum.photos/seed/5/800/600?grayscale',
-      text: 'Tattoo 5',
+      image: 'images/tattoos/t5.png',
+      text: 'Neumorfismo',
     },
     {
-      image: 'https://picsum.photos/seed/6/800/600?grayscale',
-      text: 'Tattoo 6',
+      image: 'images/tattoos/t6.png',
+      text: 'Sombras',
     },
   ];
 
