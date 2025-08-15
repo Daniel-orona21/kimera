@@ -347,6 +347,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         onEnter: () => {
           // Cambiar a negro suavemente al entrar a la sección de tattoo
           this.transitionThemeColor('#FFFFFF', '#000000', 300);
+          // Emitir cambio de tema para otros componentes
+          this.emitThemeChange(true);
           // Cambiar color de fondo del cuerpo
           gsap.to('.cuerpo', { backgroundColor: '#000000', duration: 0.3 });
           // Cambiar colores del header
@@ -358,6 +360,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         onLeave: () => {
           // Cambiar de vuelta a blanco suavemente al salir completamente de la sección de model
           this.transitionThemeColor('#000000', '#FFFFFF', 300);
+          // Emitir cambio de tema para otros componentes
+          this.emitThemeChange(false);
           // Restaurar color de fondo del cuerpo
           gsap.to('.cuerpo', { backgroundColor: '#FFFFFF', duration: 0.3 });
           // Restaurar colores del header
@@ -369,6 +373,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         onEnterBack: () => {
           // Cambiar a negro suavemente al volver a entrar a la sección de tattoo
           this.transitionThemeColor('#FFFFFF', '#000000', 300);
+          // Emitir cambio de tema para otros componentes
+          this.emitThemeChange(true);
           // Cambiar color de fondo del cuerpo
           gsap.to('.cuerpo', { backgroundColor: '#000000', duration: 0.3 });
           // Cambiar colores del header
@@ -380,6 +386,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         onLeaveBack: () => {
           // Cambiar de vuelta a blanco suavemente al salir hacia arriba de la sección de tattoo
           this.transitionThemeColor('#000000', '#FFFFFF', 300);
+          // Emitir cambio de tema para otros componentes
+          this.emitThemeChange(false);
           // Restaurar color de fondo del cuerpo
           gsap.to('.cuerpo', { backgroundColor: '#FFFFFF', duration: 0.3 });
           // Restaurar colores del header
@@ -1009,6 +1017,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       );
     }
+  }
+
+  // Método para emitir cambios de tema a otros componentes
+  private emitThemeChange(isDark: boolean): void {
+    // Emitir evento personalizado para que otros componentes puedan escucharlo
+    const themeEvent = new CustomEvent('themeChange', {
+      detail: { isDark }
+    });
+    window.dispatchEvent(themeEvent);
   }
 }
 
