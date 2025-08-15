@@ -1,5 +1,77 @@
 .cuerpo {
-  min-height: 80dvh;
+  display: flex;
+  flex-direction: column;
+  width: 100vw !important;
+  align-items: center;
+  gap: 1rem;
+
+  svg {
+    margin-bottom: 5rem;
+  }
+}
+
+.contenedorImg {
+  width: 100vw;
+  height: 40dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  
+  img {
+    width: 100%;
+    height: 190%; // Aumentado para compensar el movimiento de -100px
+    object-fit: cover;
+    object-position: center; // Centra la imagen verticalmente
+    z-index: 1;
+    position: relative;
+    transform-origin: center center;
+    will-change: transform;
+    // opacity: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, transparent 0%, rgb(0, 0, 0) 100%);
+    pointer-events: none;
+    z-index: 2;
+  }
+}
+
+.textos {
+  // background-color: red;
+  margin-top: 5rem;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.texto-container {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: moveLeft 30s linear infinite;
+}
+
+.texto {
+  font-size: 1.5rem;
+  margin-right: 3rem;
+  flex-shrink: 0;
+}
+
+@keyframes moveLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-66.666%);
+  }
 }
 
  @-webkit-keyframes animate-svg-stroke-1 {
@@ -52,5 +124,15 @@
                          animate-svg-fill-1 0.7s cubic-bezier(0.47, 0, 0.745, 0.715) 0.5s both;
             animation: animate-svg-stroke-1 2s cubic-bezier(0.47, 0, 0.745, 0.715) 0s both,
                  animate-svg-fill-1 0.7s cubic-bezier(0.47, 0, 0.745, 0.715) 0.5s both; */
+  }
+  
+  // Contenedor de la galería circular
+  .gallery-section {
+    width: 100%;
+    height: 80vh;
+    margin-top: 2rem;
+    background-color: #000000;
+    border-radius: 8px;
+    overflow: hidden;
   }
   

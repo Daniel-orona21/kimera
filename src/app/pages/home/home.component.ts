@@ -273,50 +273,56 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   private setupModelSectionTrigger(): void {
     if (!this.model) return; // No hacer nada si el modelo no está listo
 
-    // 1. Timeline para el cambio de color
-    const colorTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: this.modelSection.nativeElement,
-        scroller: this.cuerpo.nativeElement,
-        start: 'top 80%',
-        end: 'bottom 50%',  // Ahora sí: se revierte cuando el FINAL de la sección sale por arriba
-        toggleActions: 'play reverse play reverse'
-      }
-    });
-
-    colorTl.to('.cuerpo', { backgroundColor: '#000000', duration: 0.3 })
-      .to(this.header.nativeElement, { backgroundColor: '#2929296e', duration: 0.3 }, '<')
-      .to(this.header.nativeElement.querySelectorAll('a'), { color: '#ffffff', duration: 0.3 }, '<')
-      .to(this.header.nativeElement, { '--before-bg-color': '#ffffff' }, '<')
-      .to(this.h1.nativeElement, { color: '#FFFFFF', webkitTextFillColor: '#FFFFFF', duration: 0.3 }, '<');
-
-    // 2. Timeline para el cambio de color del tema
-    const themeColorTl = gsap.timeline({
+    // Timeline unificado para el cambio de color y tema
+    const modelSectionTl = gsap.timeline({
       scrollTrigger: {
         trigger: this.modelSection.nativeElement,
         scroller: this.cuerpo.nativeElement,
         start: 'top 80%',
         end: 'bottom 50%',
-        toggleActions: 'play reverse play reverse',
         onEnter: () => {
           // Cambiar a negro suavemente al entrar
           this.transitionThemeColor('#FFFFFF', '#000000', 300);
+          // Cambiar color de fondo del cuerpo
+          gsap.to('.cuerpo', { backgroundColor: '#000000', duration: 0.3 });
+          // Cambiar colores del header
+          gsap.to(this.header.nativeElement, { backgroundColor: '#2929296e', duration: 0.3 });
+          gsap.to(this.header.nativeElement.querySelectorAll('a'), { color: '#ffffff', duration: 0.3 });
+          gsap.to(this.header.nativeElement, { '--before-bg-color': '#ffffff' });
+          gsap.to(this.h1.nativeElement, { color: '#FFFFFF', webkitTextFillColor: '#FFFFFF', duration: 0.3 });
         },
         onLeave: () => {
           // Cambiar de vuelta a blanco suavemente al salir
-          setTimeout(() => {
-            this.transitionThemeColor('#000000', '#FFFFFF', 300);
-          }, 200);
+          this.transitionThemeColor('#000000', '#FFFFFF', 300);
+          // Restaurar color de fondo del cuerpo
+          gsap.to('.cuerpo', { backgroundColor: '#FFFFFF', duration: 0.3 });
+          // Restaurar colores del header
+          gsap.to(this.header.nativeElement, { backgroundColor: '#ffffff', duration: 0.3 });
+          gsap.to(this.header.nativeElement.querySelectorAll('a'), { color: '#000000', duration: 0.3 });
+          gsap.to(this.header.nativeElement, { '--before-bg-color': '#000000' });
+          gsap.to(this.h1.nativeElement, { color: '#000000', webkitTextFillColor: '#000000', duration: 0.3 });
         },
         onEnterBack: () => {
           // Cambiar a negro suavemente al volver a entrar
           this.transitionThemeColor('#FFFFFF', '#000000', 300);
+          // Cambiar color de fondo del cuerpo
+          gsap.to('.cuerpo', { backgroundColor: '#000000', duration: 0.3 });
+          // Cambiar colores del header
+          gsap.to(this.header.nativeElement, { backgroundColor: '#2929296e', duration: 0.3 });
+          gsap.to(this.header.nativeElement.querySelectorAll('a'), { color: '#ffffff', duration: 0.3 });
+          gsap.to(this.header.nativeElement, { '--before-bg-color': '#ffffff' });
+          gsap.to(this.h1.nativeElement, { color: '#FFFFFF', webkitTextFillColor: '#FFFFFF', duration: 0.3 });
         },
         onLeaveBack: () => {
           // Cambiar de vuelta a blanco suavemente al salir hacia arriba
-          setTimeout(() => {
-            this.transitionThemeColor('#000000', '#FFFFFF', 300);
-          }, 200);
+          this.transitionThemeColor('#000000', '#FFFFFF', 300);
+          // Restaurar color de fondo del cuerpo
+          gsap.to('.cuerpo', { backgroundColor: '#FFFFFF', duration: 0.3 });
+          // Restaurar colores del header
+          gsap.to(this.header.nativeElement, { backgroundColor: '#ffffff', duration: 0.3 });
+          gsap.to(this.header.nativeElement.querySelectorAll('a'), { color: '#000000', duration: 0.3 });
+          gsap.to(this.header.nativeElement, { '--before-bg-color': '#000000' });
+          gsap.to(this.h1.nativeElement, { color: '#000000', webkitTextFillColor: '#000000', duration: 0.3 });
         }
       }
     });
@@ -327,20 +333,48 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // Inicialmente oculto
       gsap.set(carouselElement, { opacity: 0, y: 0, visibility: 'hidden' });
       
-      const carouselTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: this.modelSection.nativeElement.querySelector('.contenido1'),
-          scroller: this.cuerpo.nativeElement,
-          start: 'top top',
-          end: 'bottom bottom',
-          toggleActions: 'play reverse play reverse'
+      ScrollTrigger.create({
+        trigger: this.modelSection.nativeElement.querySelector('.contenido1'),
+        scroller: this.cuerpo.nativeElement,
+        start: 'top top',
+        end: 'bottom bottom',
+        onEnter: () => {
+          gsap.to(carouselElement, { 
+            opacity: 1, 
+            y: 0, 
+            visibility: 'visible',
+            duration: 0.3
+          });
+        },
+        onLeave: () => {
+          gsap.to(carouselElement, { 
+            opacity: 0, 
+            y: 0, 
+            duration: 0.6,
+            onComplete: () => {
+              carouselElement.style.visibility = 'hidden';
+            }
+          });
+        },
+        
+        onEnterBack: () => {
+          gsap.to(carouselElement, { 
+            opacity: 1, 
+            y: 0, 
+            visibility: 'visible',
+            duration: 0.3
+          });
+        },
+        onLeaveBack: () => {
+          gsap.to(carouselElement, { 
+            opacity: 0, 
+            y: 0, 
+            duration: 0.6,
+            onComplete: () => {
+              carouselElement.style.visibility = 'hidden';
+            }
+          });
         }
-      });
-
-      carouselTl.to(carouselElement, { 
-        opacity: 1, 
-        y: 0, 
-        visibility: 'visible',
       });
     }
 
@@ -350,20 +384,47 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // Inicialmente oculto
       gsap.set(centro2Element, { opacity: 0, y: 0, visibility: 'hidden' });
       
-      const centro2Tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: this.modelSection.nativeElement.querySelector('.contenido2'),
-          scroller: this.cuerpo.nativeElement,
-          start: 'top top',
-          end: 'bottom bottom',
-          toggleActions: 'play reverse play reverse'
+      ScrollTrigger.create({
+        trigger: this.modelSection.nativeElement.querySelector('.contenido2'),
+        scroller: this.cuerpo.nativeElement,
+        start: 'top top',
+        end: 'bottom bottom',
+        onEnter: () => {
+          gsap.to(centro2Element, { 
+            opacity: 1, 
+            y: 0, 
+            visibility: 'visible',
+            duration: 0.3
+          });
+        },
+        onLeave: () => {
+          gsap.to(centro2Element, { 
+            opacity: 0, 
+            y: 0, 
+            duration: 0.6,
+            onComplete: () => {
+              centro2Element.style.visibility = 'hidden';
+            }
+          });
+        },
+        onEnterBack: () => {
+          gsap.to(centro2Element, { 
+            opacity: 1, 
+            y: 0, 
+            visibility: 'visible',
+            duration: 0.3
+          });
+        },
+        onLeaveBack: () => {
+          gsap.to(centro2Element, { 
+            opacity: 0, 
+            y: 0, 
+            duration: 0.6,
+            onComplete: () => {
+              centro2Element.style.visibility = 'hidden';
+            }
+          });
         }
-      });
-
-      centro2Tl.to(centro2Element, { 
-        opacity: 1, 
-        y: 0, 
-        visibility: 'visible',
       });
     }
 
@@ -387,7 +448,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // 6. Animación para el componente barber
     this.setupBarberAnimations();
     
-    // 7. Animación para las cartas de la sección2
+    // 7. Animación para la imagen del tattoo
+    // this.setupTattooImageAnimation(); // Moved to setupScroll()
+    
+    // 8. Animación para las cartas de la sección2
     this.setupCartasAnimations();
   }
 
@@ -570,12 +634,43 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  private setupTattooImageAnimation(): void {
+    console.log('🔍 Configurando animación del tattoo...');
+    // Pequeño delay para asegurar que el componente esté renderizado
+    setTimeout(() => {
+      // Buscar el componente tattoo en el DOM
+      const tattooComponent = document.querySelector('app-tattoo');
+      console.log('📱 Componente tattoo encontrado:', !!tattooComponent);
+      if (!tattooComponent) return;
+
+      // Buscar la imagen dentro del contenedorImg
+      const tattooImage = tattooComponent.querySelector('.contenedorImg img');
+      console.log('🖼️ Imagen del tattoo encontrada:', !!tattooImage);
+      if (!tattooImage) return;
+
+      console.log('✅ Configurando ScrollTrigger para la imagen del tattoo');
+      // Animación de la imagen basada en scroll - movimiento más sutil
+      gsap.to(tattooImage, {
+        y: -150, // Movimiento más sutil para evitar recortes
+        ease: 'none',
+        scrollTrigger: {
+          trigger: tattooComponent,
+          scroller: this.cuerpo.nativeElement,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1, // Sincroniza con el scroll
+        }
+      });
+    }, 100); // 100ms de delay
+  }
+
   private setupScroll(): void {
     this.renderer.addClass(this.cuerpo.nativeElement, 'scroll');
     this.setupScrollTriggerProxy();
     // Ya no llamamos a setupModelSectionTrigger() aquí
     this.lenis?.start();
     this.setupGsapAnimation();
+    this.setupTattooImageAnimation(); // Agregar aquí para que se ejecute siempre
   }
 
   private updateThemeColor(color: string): void {
