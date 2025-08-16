@@ -6,7 +6,6 @@
 }
 
 .ubicacion-container {
-  min-height: 100vh;
   width: 100vw;
   margin-bottom: 5rem;
   display: flex;
@@ -43,6 +42,7 @@
   width: 100%;
   background-color: transparent !important;
   display: flex;
+  margin: 0rem !important;
   flex-direction: column;
 }
 
@@ -63,8 +63,13 @@
 
     .direccion {
         display: flex;
+        justify-content: center;
         flex-direction: column;
         align-items: center;
+
+        p {
+          margin: 0;
+        }
     }
     
     .ubicacion-titulo {
@@ -195,11 +200,6 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
   border: 1px solid rgba(226, 232, 240, 0.8);
   
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 3rem;
-  }
-  
   .contacto-item {
     display: flex;
     align-items: center;
@@ -242,51 +242,7 @@
   }
 }
 
-// Responsive adjustments
-@media (max-width: 640px) {
-  .ubicacion-container {
-    padding: 1rem 0.5rem;
-  }
-  
-  .ubicacion-header {
-    margin-bottom: 2rem;
-    padding: 1rem 0;
-  }
-  
-  .ubicaciones-grid {
-    gap: 2rem;
-    margin-bottom: 2rem;
-  }
-  
-  .ubicacion-card {
-    .ubicacion-info {
-      padding: 1.5rem;
-    }
-    
-    .btn-direcciones {
-      padding: 0.875rem 1.5rem;
-      font-size: 0.95rem;
-    }
-  }
-  
-  .contacto-info {
-    padding: 2rem 1rem;
-    
-    .contacto-item {
-      padding: 1rem;
-      
-      div {
-        h4 {
-          font-size: 1rem;
-        }
-        
-        p {
-          font-size: 0.95rem;
-        }
-      }
-    }
-  }
-}
+
 
 
 // Animation classes for GSAP integration
@@ -373,6 +329,62 @@
       &:hover {
         background: linear-gradient(135deg, #e2e8f0 0%, #f8fafc 100%);
       }
+    }
+  }
+}
+
+
+// Responsive adjustments
+@media (max-width: 748px) {
+
+  .ubicacion-info {
+    padding: .5rem !important;
+  }
+
+  .ubicacion-titulo {
+    font-size: 2rem !important;
+    font-weight: normal;
+    color: black;
+    letter-spacing: -0.01em;
+  }
+
+  .direccion {
+    font-size: .6rem !important;
+  }
+  
+  .ubicacion-direccion {
+    color: black;
+    font-weight: 500;
+    line-height: 1.5;
+    font-size: inherit !important;
+  }
+  
+  .ubicacion-ciudad {
+    font-size: inherit !important;
+    color: black;
+    margin-bottom: 1rem;
+    font-weight: 400;
+  }
+
+  .ubicacion-header {
+    text-align: center;
+    padding: 1rem 0 !important;
+    
+    .titulo-principal {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: normal;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+      color: black;
+    }
+    
+    .subtitulo {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: black;
+      font-weight: 300;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
     }
   }
 }
