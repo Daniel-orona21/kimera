@@ -53,26 +53,32 @@
   position: relative;
 }
 
-.texto-container {
-  display: flex;
-  align-items: center;
+.texto-wrapper {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.texto-marquee {
   white-space: nowrap;
-  animation: moveLeft 30s linear infinite;
+  overflow: hidden;
+  display: inline-block;
+  animation: marquee 70s linear infinite;
 }
 
 .texto {
   font-size: 1.5rem;
   margin-right: 3rem;
+  display: inline-block;
   flex-shrink: 0;
   color: #ffffff;
 }
 
-@keyframes moveLeft {
+@keyframes marquee {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-66.666%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
@@ -82,9 +88,22 @@
   .gallery-section {
     width: 100%;
     height: 80vh;
-    margin-top: 2rem;
-    background-color: transparent;
     border-radius: 8px;
     overflow: hidden;
   }
   
+  @media (max-width: 768px) {
+
+    .tattoo-container {
+      gap: 0rem;
+    }
+
+    svg {
+      scale: 0.5;
+      margin-bottom: 2rem !important;
+    }
+
+    .contenedorImg {
+      height: 20dvh !important;
+    }
+  }

@@ -143,7 +143,7 @@ export class TattooComponent implements AfterViewInit {
       
       // Animación de la imagen basada en scroll - movimiento sutil
       gsap.to(tattooImage, {
-        y: -150, // Movimiento sutil para evitar recortes
+        y: window.innerWidth <= 768 ? -40 : -150, // En móvil -50, en desktop -150
         ease: 'none',
         scrollTrigger: {
           trigger: tattooImage,

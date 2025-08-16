@@ -41,7 +41,7 @@ function getFontSize(font: string): number {
 function createTextTexture(
   gl: GL,
   text: string,
-  font: string = 'bold 30px monospace',
+  font: string = '30px "NeueThin", Arial, sans-serif',
   color: string = 'black'
 ): { texture: Texture; width: number; height: number } {
   const canvas = document.createElement('canvas');
@@ -93,7 +93,7 @@ class Title {
     renderer,
     text,
     textColor = '#000000',
-    font = '30px sans-serif',
+    font = '30px "NeueThin", Arial, sans-serif',
   }: TitleProps) {
     autoBind(this);
     this.gl = gl;
@@ -454,7 +454,7 @@ class App {
       bend = 1,
       textColor = '#ffffff',
       borderRadius = 0,
-      font = 'bold 30px DM Sans',
+      font = '30px "NeueThin", Arial, sans-serif',
     }: AppConfig
   ) {
     document.documentElement.classList.remove('no-js');
@@ -715,7 +715,7 @@ export class CircularGalleryComponent implements OnInit, OnDestroy {
   @Input() bend: number = 3;
   @Input() textColor: string = '#ffffff';
   @Input() borderRadius: number = 0.05;
-  @Input() font: string = 'bold 30px DM Sans';
+  @Input() font: string = '30px "NeueThin", Arial, sans-serif';
 
   @ViewChild('galleryContainer', { static: true }) galleryContainer!: ElementRef<HTMLDivElement>;
 
