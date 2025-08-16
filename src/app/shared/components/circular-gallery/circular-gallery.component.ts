@@ -393,16 +393,27 @@ class Media {
         ];
       }
     }
-    this.scale = this.screen.height / 1500;
+    
+    // Ajuste responsivo para móvil
+    const isMobile = this.screen.width <= 768;
+    this.scale = isMobile ? this.screen.height / 2500 : this.screen.height / 1500;
+    
+    // Escalado más pequeño en móvil
+    const scaleY = isMobile ? 1500 : 900;
+    const scaleX = isMobile ? 1300 : 700;
+    
     this.plane.scale.y =
-      (this.viewport.height * (900 * this.scale)) / this.screen.height;
+      (this.viewport.height * (scaleY * this.scale)) / this.screen.height;
     this.plane.scale.x =
-      (this.viewport.width * (700 * this.scale)) / this.screen.width;
+      (this.viewport.width * (scaleX * this.scale)) / this.screen.width;
+    
     this.plane.program.uniforms['uPlaneSizes'].value = [
       this.plane.scale.x,
       this.plane.scale.y,
     ];
-    this.padding = 2;
+    
+    // Padding más pequeño en móvil para mejor visibilidad
+    this.padding = isMobile ? 1.5 : 2;
     this.width = this.plane.scale.x + this.padding;
     this.widthTotal = this.width * this.length;
     this.x = this.width * this.index;
@@ -583,8 +594,13 @@ class App {
   onTouchMove(e: MouseEvent | TouchEvent) {
     if (!this.isDown) return;
     const x = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const distance = (this.start - x) * 0.05;
-    this.scroll.target = (this.scroll.position ?? 0) + distance;
+    const distance = (this.start - x);
+    
+    // Mejor sensibilidad en móvil
+    const isMobile = this.screen.width <= 768;
+    const sensitivity = isMobile ? .2 : 0.1; // Sensibilidad más controlada en móvil
+    
+    this.scroll.target = (this.scroll.position ?? 0) + (distance * sensitivity);
   }
 
   onTouchUp() {
@@ -600,9 +616,19 @@ class App {
   onCheck() {
     if (!this.medias || !this.medias[0]) return;
     const width = this.medias[0].width;
+    
+    // Scroll más preciso en móvil
+    const isMobile = this.screen.width <= 768;
+    const snapThreshold = isMobile ? 0.2 : 1; // Umbral más bajo en móvil para mejor precisión
+    
     const itemIndex = Math.round(Math.abs(this.scroll.target) / width);
     const item = width * itemIndex;
-    this.scroll.target = this.scroll.target < 0 ? -item : item;
+    
+    // Solo hacer snap si estamos cerca del centro del item
+    const currentOffset = Math.abs(this.scroll.target) % width;
+    if (currentOffset > width * snapThreshold) {
+      this.scroll.target = this.scroll.target < 0 ? -item : item;
+    }
   }
 
   onResize() {

@@ -40,6 +40,14 @@ export class TattooComponent implements AfterViewInit {
     },
   ];
 
+  get isMobile(): boolean {
+    return window.innerWidth <= 768;
+  }
+
+  get bendValue(): number {
+    return this.isMobile ? 1 : 3;
+  }
+
   ngAfterViewInit() {
     // Registrar ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
