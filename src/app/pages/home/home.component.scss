@@ -316,3 +316,15 @@ header {
       }
   }
 }
+
+@media (max-width: 768px) {
+    .inicio {
+        h1 {
+            font-size: 20vw;
+        }
+    }
+
+    .subtitulo {
+        font-size: 4vw !important;
+    }
+}
