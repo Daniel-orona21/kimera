@@ -55,7 +55,6 @@
     width: 100%;
     max-width: 80em;
     margin: 0 auto;
-    position: relative;
     overflow-y: hidden; /* Ocultar overflow para las animaciones */
     min-height: 200vh; /* Asegurar que hay suficiente contenido para scroll */
 }
@@ -94,42 +93,62 @@
     margin-bottom: 0rem; /* Espacio reducido entre imágenes */
 }
 
-/* general styles */
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overscroll-behavior: none;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-        "Segoe UI Symbol";
-}
-
 @media (max-width: 768px) {
+    .contenido {
+        flex-direction: column;
+    }
+    
     .text-container {
-        width: 100%;
-        height: 70vh !important;
+        width: 100% !important;
+        height: 100vh !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         
         .hello__div {
             padding-left: 0;
-            padding-top: 6.5rem;
-
-        .contenedorTexto {
-            width: 100%;
-    
-            p {
-               font-size: 10.5vw !important;
-               text-align: center;
+            padding-top: 0;
+            padding-bottom: 0;
+            background-color: white;
+            width: 100vw !important;
+            padding: .5rem 0 !important;
+            margin: 0;
+            text-align: center;
+            
+            .contenedorTexto {
+                width: 100%;
+                
+                p {
+                   font-size: 8vw !important;
+                   text-align: center;
+                   color: rgb(0, 0, 0) !important;
+                }
             }
-           }
         }
+    }
+    
+    .columns {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 1rem;
+        gap: 1rem;
+        margin-top: -100vh !important;
+    }
+    
+    .column {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .column__item {
+        margin-bottom: 1rem !important;
+    }
+    
+    .column__item-imgwrap img {
+        border-radius: 0.5em;
     }
 }
