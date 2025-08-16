@@ -1,64 +1,53 @@
 <footer class="relative border-t bg-background text-foreground transition-colors duration-300">
   <div class="container mx-auto px-4 py-12 md:px-6 lg:px-8">
-    <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
-      <!-- Stay Connected Section -->
+        <div class="grid gap-8 grid-cols-1 md:gap-12 md:grid-cols-2 lg:grid-cols-4">
+      <!-- Kimera Studio Section - SOLO en su línea -->
       <div class="relative">
         <h2 class="mb-4 text-3xl font-bold tracking-tight kimera">Kimera Studio</h2>
         <p class="mb-6 text-muted-foreground">
           Únete a nuestra comunidad!
         </p>
-        <!-- <form class="relative" (ngSubmit)="onSubmit()">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            class="pr-12 backdrop-blur-sm w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            [(ngModel)]="email"
-            name="email"
-            required
-          />
-          <button
-            type="submit"
-            class="absolute right-1 top-1 h-8 w-8 rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105 flex items-center justify-center"
-          >
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-            </svg>
-            <span class="sr-only">Subscribe</span>
-          </button>
-        </form> -->
         <div class="absolute -right-4 top-0 h-24 w-24 rounded-full bg-primary/10 blur-2xl"></div>
       </div>
 
-      <!-- Quick Links Section -->
-      <div>
-        <h3 class="mb-4 text-lg font-semibold">Secciones</h3>
-        <nav class="space-y-2 text-sm">
-          <!-- <a (click)="scrollTo('inicio')" class="block transition-colors hover:text-primary cursor-pointer">Home</a> -->
-          <a (click)="scrollTo('barber')" class="block transition-colors hover:text-primary cursor-pointer">Barber</a>
-          <a (click)="scrollTo('tattoo')" class="block transition-colors hover:text-primary cursor-pointer">Tattoo</a>
-          <a (click)="scrollTo('productos')" class="block transition-colors hover:text-primary cursor-pointer">Productos</a>
-          <a (click)="scrollTo('ubicacion')" class="block transition-colors hover:text-primary cursor-pointer">Ubicación</a>
-        </nav>
+      <!-- Secciones y Contáctanos en la misma línea -->
+      <div class="secciones-contactanos">
+        <!-- Quick Links Section -->
+        <div class="secciones">
+          <h3 class="mb-4 text-lg font-semibold">Secciones</h3>
+          <nav class="space-y-2 text-sm">
+            <a (click)="scrollTo('barber')" class="block transition-colors hover:text-primary cursor-pointer">Barber</a>
+            <a (click)="scrollTo('tattoo')" class="block transition-colors hover:text-primary cursor-pointer">Tattoo</a>
+            <a (click)="scrollTo('productos')" class="block transition-colors hover:text-primary cursor-pointer">Productos</a>
+            <a (click)="scrollTo('ubicacion')" class="block transition-colors hover:text-primary cursor-pointer">Ubicación</a>
+          </nav>
+        </div>
+
+        <!-- Contact Us Section -->
+        <div class="contactanos">
+          <h3 class="mb-4 text-lg font-semibold">Contáctanos</h3>
+          <address class="space-y-2 text-sm not-italic">
+            <p>Kimera Studio</p>
+            <p>Barber & Tattoo</p>
+            <p>Yahir: (618) 328-6528</p>
+            <p>Leo: (618) 295-5673</p>
+            <p>Erick: (618) 134-9978</p>
+          </address>
+        </div>
       </div>
 
-      <!-- Contact Us Section -->
-      <div>
-        <h3 class="mb-4 text-lg font-semibold">Contáctanos</h3>
+      <div class="contactanos">
+        <h3 class="mb-4 text-lg font-semibold">Redes Sociales</h3>
         <address class="space-y-2 text-sm not-italic">
-          <p>Kimera Studio</p>
-          <p>Barber & Tattoo</p>
-          <p>Yahir: (618) 328-6528</p>
-          <p>Leo: (618) 295-5673</p>
-          <p>Erick: (618) 134-9978</p>
+          <a href="https://instagram.com/kimera.studio.barberia" target="_blank">kimera.studio.barberia</a>
+          <a href="https://www.instagram.com/omar.kimerartista" target="_blank">omar.kimerartista</a>
         </address>
       </div>
 
-      <!-- Follow Us Section -->
-      <div class="relative row">
+      <!-- <div class="relative row">
         <div class="contenedor">
             <h3 class="mb-4 text-lg font-semibold">Barber</h3>
         <div class="mb-6 flex space-x-4">
-          <!-- Instagram Button -->
           <a href="https://www.instagram.com/kimera.studio.barberia/#">
             <button class="instagram-btn" title="Síguenos en Instagram - Barber">
                 <svg class="instagram-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -72,7 +61,6 @@
         <div class="contenedor">
             <h3 class="mb-4 text-lg font-semibold">Tattoo</h3>
         <div class="mb-6 flex space-x-4">
-          <!-- Instagram Button -->
           <a href="https://www.instagram.com/omar.kimerartista/#">
             <button class="instagram-btn" title="Síguenos en Instagram - Tattoo">
                 <svg class="instagram-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -82,34 +70,7 @@
           </a>
         </div>
         </div>
-
-        
-
-        <!-- Dark Mode Toggle -->
-        <!-- <div class="flex items-center space-x-2">
-          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-          </svg>
-          
-          <button 
-            type="button" 
-            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            [class.bg-blue-600]="isDarkMode()"
-            [class.bg-gray-200]="!isDarkMode()"
-            (click)="toggleDarkMode()"
-          >
-            <span 
-              class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
-              [class.translate-x-6]="isDarkMode()"
-              [class.translate-x-1]="!isDarkMode()"
-            ></span>
-          </button>
-          
-          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9 9 0 0012 21a9 9 0 009-9 9 9 0 00-1.646-2.646z"></path>
-          </svg>
-        </div> -->
-      </div>
+      </div> -->
     </div>
 
     <!-- Bottom Section -->
