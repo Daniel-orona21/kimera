@@ -1,10 +1,10 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/kimera",
-  "routes": [
+  "outputDirectory": "dist/kimera/browser",
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
