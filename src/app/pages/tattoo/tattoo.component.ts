@@ -16,27 +16,27 @@ export class TattooComponent implements AfterViewInit {
   galleryItems = [
     {
       image: 'images/tattoos/t1.png',
-      text: 'Puntillismo',
-    },
-    {
-      image: 'images/tattoos/t2.png',
       text: 'Linea Fina',
     },
     {
+      image: 'images/tattoos/t2.png',
+      text: 'Enredadera',
+    },
+    {
       image: 'images/tattoos/t3.png',
-      text: 'Realismo',
+      text: 'Arcangel',
     },
     {
       image: 'images/tattoos/t4.png',
-      text: 'Colores',
+      text: 'Linea Fina',
     },
     {
       image: 'images/tattoos/t5.png',
-      text: 'Neumorfismo',
+      text: 'Brazalete',
     },
     {
       image: 'images/tattoos/t6.png',
-      text: 'Sombras',
+      text: 'Sono Nato Per Amare',
     },
   ];
 
