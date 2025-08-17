@@ -6,7 +6,7 @@
 echo "🚀 Actualizando aplicación Kimera en EC2..."
 
 # Variables
-EC2_IP="44.220.130.42"
+EC2_IP="54.234.227.158"
 KEY_FILE="instancia.pem"
 REPO_URL="https://github.com/Daniel-orona21/kimera.git"
 
